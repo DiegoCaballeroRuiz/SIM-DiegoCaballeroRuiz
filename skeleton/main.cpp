@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+#include "Vector3D.hpp"
+
 std::string display_text = "This is a test";
 
 
@@ -54,7 +56,34 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	}
+
+	//Create axis
+	Vector3D position;
+	Vector3D auxPosition;
+
+	PxSphereGeometry centreGeo = PxSphereGeometry(1.0);
+	PxTransform* centreTransform = new PxTransform({ position.getX(), position.getY(), position.getZ()});
+	PxShape* centreShape = CreateShape(centreGeo);
+	auto centrePoint = new RenderItem(centreShape, centreTransform, {1, 1, 1, 1});
+
+	auxPosition = position + Vector3D(1, 0, 0) * 5;
+	PxSphereGeometry xGeo = PxSphereGeometry(1.0);
+	PxTransform* xTransform = new PxTransform({ auxPosition.getX(), auxPosition.getY(), auxPosition.getZ() });
+	PxShape* xShape = CreateShape(xGeo);
+	auto xPoint = new RenderItem(xShape, xTransform, { 1, 0, 0, 1 });
+	
+	auxPosition = position + Vector3D(0, 1, 0) * 5;
+	PxSphereGeometry yGeo = PxSphereGeometry(1.0);
+	PxTransform* yTransform = new PxTransform({ auxPosition.getX(), auxPosition.getY(), auxPosition.getZ() });
+	PxShape* yShape = CreateShape(yGeo);
+	auto yPoint = new RenderItem(yShape, yTransform, { 0, 1, 0, 1 });
+
+	auxPosition = position + Vector3D(0, 0, 1) * 5;
+	PxSphereGeometry zGeo = PxSphereGeometry(1.0);
+	PxTransform* zTransform = new PxTransform({ auxPosition.getX(), auxPosition.getY(), auxPosition.getZ() });
+	PxShape* zShape = CreateShape(zGeo);
+	auto zPoint = new RenderItem(zShape, zTransform, { 0, 0, 1, 1 });
+}
 
 
 // Function to configure what happens in each step of physics
