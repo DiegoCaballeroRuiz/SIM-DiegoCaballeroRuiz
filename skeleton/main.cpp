@@ -59,8 +59,9 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	Vector3 centre;
-	Vector3 velocity = Vector3(0, 5, 0);
-	particle = new Particle(centre, velocity);
+	Vector3 velocity = Vector3(0, 1, 0);
+	Vector3 accel = Vector3(0, 1.5, 0);
+	particle = new Particle(centre, velocity, accel);
 }
 
 

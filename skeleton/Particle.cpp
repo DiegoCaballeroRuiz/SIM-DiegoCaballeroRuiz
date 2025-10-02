@@ -1,6 +1,6 @@
 #include "Particle.hpp"
 
-Particle::Particle(Vector3 pos, Vector3 vel) : velocity(vel), pose(pos)
+Particle::Particle(Vector3 pos, Vector3 vel, Vector3 accel) : velocity(vel), pose(pos), acceleration(accel)
 {
 	const physx::PxSphereGeometry geo = physx::PxSphereGeometry(1.0);
 	physx::PxShape* centreShape = CreateShape(geo);
@@ -14,5 +14,6 @@ Particle::~Particle() {
 
 void
 Particle::integrate(double t) {
+	velocity += acceleration * t;
 	pose.p += velocity * t;
 }
