@@ -7,9 +7,10 @@ class Particle {
 	Vector3 velocity, acceleration;
 	physx::PxTransform pose;
 	RenderItem* renderItem;
+	double damping;
 
 public:
-	Particle(Vector3 pos, Vector3 vel, Vector3 accel);
+	Particle(Vector3 pos, Vector3 vel, Vector3 accel, double damp);
 	~Particle();
 	
 	void integrate(double t);

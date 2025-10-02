@@ -61,7 +61,7 @@ void initPhysics(bool interactive)
 	Vector3 centre;
 	Vector3 velocity = Vector3(0, 1, 0);
 	Vector3 accel = Vector3(0, 1.5, 0);
-	particle = new Particle(centre, velocity, accel);
+	particle = new Particle(centre, velocity, accel, 0.5);
 }
 
 
