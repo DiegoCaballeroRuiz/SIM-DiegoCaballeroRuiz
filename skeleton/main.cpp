@@ -7,10 +7,9 @@
 #include "core.hpp"
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
+#include "Particle.hpp"
 
 #include <iostream>
-
-#include "Vector3D.hpp"
 
 std::string display_text = "This is a test";
 
@@ -31,6 +30,8 @@ PxPvd*                  gPvd        = NULL;
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
+
+Particle* particle;
 
 
 // Initialize physics engine
@@ -57,32 +58,9 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	//Create axis
-	Vector3D position;
-	Vector3D auxPosition;
-
-	PxSphereGeometry centreGeo = PxSphereGeometry(1.0);
-	PxTransform* centreTransform = new PxTransform({ position.getX(), position.getY(), position.getZ()});
-	PxShape* centreShape = CreateShape(centreGeo);
-	auto centrePoint = new RenderItem(centreShape, centreTransform, {1, 1, 1, 1});
-
-	auxPosition = position + Vector3D(1, 0, 0) * 5;
-	PxSphereGeometry xGeo = PxSphereGeometry(1.0);
-	PxTransform* xTransform = new PxTransform({ auxPosition.getX(), auxPosition.getY(), auxPosition.getZ() });
-	PxShape* xShape = CreateShape(xGeo);
-	auto xPoint = new RenderItem(xShape, xTransform, { 1, 0, 0, 1 });
-	
-	auxPosition = position + Vector3D(0, 1, 0) * 5;
-	PxSphereGeometry yGeo = PxSphereGeometry(1.0);
-	PxTransform* yTransform = new PxTransform({ auxPosition.getX(), auxPosition.getY(), auxPosition.getZ() });
-	PxShape* yShape = CreateShape(yGeo);
-	auto yPoint = new RenderItem(yShape, yTransform, { 0, 1, 0, 1 });
-
-	auxPosition = position + Vector3D(0, 0, 1) * 5;
-	PxSphereGeometry zGeo = PxSphereGeometry(1.0);
-	PxTransform* zTransform = new PxTransform({ auxPosition.getX(), auxPosition.getY(), auxPosition.getZ() });
-	PxShape* zShape = CreateShape(zGeo);
-	auto zPoint = new RenderItem(zShape, zTransform, { 0, 0, 1, 1 });
+	Vector3 centre;
+	Vector3 velocity = Vector3(0, 5, 0);
+	particle = new Particle(centre, velocity);
 }
 
 
@@ -95,6 +73,8 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
+
+	particle->integrate(t);
 }
 
 // Function to clean data
@@ -113,6 +93,8 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
+
+	delete particle;
 	}
 
 // Function called when a key is pressed
