@@ -17,7 +17,6 @@ Particle::~Particle() {
 void
 Particle::integrate(double t) {
 	velocity += acceleration * t;
-	//velocity *= std::pow(damping, t);
-	velocity *= damping;
 	pose.p += velocity * t;
+	velocity *= std::pow(damping, t);	
 }

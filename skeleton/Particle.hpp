@@ -15,6 +15,7 @@ public:
 	
 	void integrate(double t);
 	
-	void setAccel(Vector3 newAccel);
-	Vector3 getAccel() const;
+	void setAccel(Vector3 newAccel) { acceleration = newAccel; }
+	Vector3 getAccel() const { return acceleration; }
+	physx::PxTransform* getTransform() { return &pose; }
 };

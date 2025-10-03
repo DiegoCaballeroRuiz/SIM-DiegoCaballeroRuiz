@@ -58,12 +58,12 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	Vector3 centre;
-	Vector3 velocity = Vector3(0, 1, 0);
-	Vector3 accel = Vector3(0, 1.5, 0);
-	particle = new Particle(centre, velocity, accel, 0.5);
+	Vector3 centre = Vector3(0.0, 0.0, 0.0);
+	Vector3 velocity = Vector3(25.0, 25.0, 0.0);
+	Vector3 accel = Vector3(0.0, -9.8, 0.0);
+	particle = new Particle(centre, velocity, accel, 0.9);
 }
-
+	
 
 // Function to configure what happens in each step of physics
 // interactive: true if the game is rendering, false if it offline
@@ -76,6 +76,7 @@ void stepPhysics(bool interactive, double t)
 	gScene->fetchResults(true);
 
 	particle->integrate(t);
+	std::cout << "X: " << particle->getTransform()->p.x << ", Y: " << particle->getTransform()->p.y << ", Z: " << particle->getTransform()->p.z << "\n";
 }
 
 // Function to clean data
@@ -95,7 +96,7 @@ void cleanupPhysics(bool interactive)
 	
 	gFoundation->release();
 
-	delete particle;
+	delete particle; 
 	}
 
 // Function called when a key is pressed
