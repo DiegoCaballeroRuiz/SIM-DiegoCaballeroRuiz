@@ -7,7 +7,7 @@
 #include "core.hpp"
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
-#include "Particle.hpp"
+#include "Scenes.h"
 
 #include <iostream>
 
@@ -31,8 +31,7 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-Particle* particle;
-
+Scene* currentScene;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -58,10 +57,8 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	Vector3 centre = Vector3(0.0, 0.0, 0.0);
-	Vector3 velocity = Vector3(25.0, 25.0, 0.0);
-	Vector3 accel = Vector3(0.0, -9.8, 0.0);
-	particle = new Particle(centre, velocity, accel, 0.9);
+	currentScene = new Scene1();
+	currentScene->start();
 }
 	
 
@@ -75,8 +72,7 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
-	particle->integrate(t);
-	std::cout << "X: " << particle->getTransform()->p.x << ", Y: " << particle->getTransform()->p.y << ", Z: " << particle->getTransform()->p.z << "\n";
+	currentScene->integrate(t);
 }
 
 // Function to clean data
@@ -96,8 +92,8 @@ void cleanupPhysics(bool interactive)
 	
 	gFoundation->release();
 
-	delete particle; 
-	}
+	delete currentScene;
+}
 
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)
@@ -106,13 +102,12 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 	switch(toupper(key))
 	{
-	//case 'B': break;
-	//case ' ':	break;
 	case ' ':
 	{
 		break;
 	}
 	default:
+		currentScene->processKey(key, &camera);
 		break;
 	}
 }
