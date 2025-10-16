@@ -10,8 +10,10 @@ protected:
 	RenderItem* renderItem;
 	double damping;
 
+	double lifetime, timeAlive;
+
 public:
-	Particle(Vector3 pos, Vector3 vel, Vector3 accel, double damp, Vector4 color = {1.0, 1.0, 1.0, 1.0});
+	Particle(Vector3 pos, Vector3 vel, Vector3 accel, double damp, Vector4 color = {1.0, 1.0, 1.0, 1.0}, double lifeTime = 100.0);
 	~Particle();
 	
 	void integrate(double t);
@@ -19,4 +21,6 @@ public:
 	void setAccel(Vector3 newAccel) { acceleration = newAccel; }
 	Vector3 getAccel() const { return acceleration; }
 	physx::PxTransform* getTransform() { return &pose; }
+
+	bool isAlive() { return timeAlive < lifetime; }
 };

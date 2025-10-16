@@ -1,5 +1,6 @@
 #include "Scenes.h"
 #include "Proyectile.h"
+#include "GaussianGenerator.h"
 
 void 
 Scene1::integrate(double t) {
@@ -48,4 +49,25 @@ Scene1::processKey(unsigned char c, const physx::PxTransform* camera) {
 	if (!generate) return;
 	info.pos = camera->p;
 	proyectiles.push_back(new Proyectile(info.pos, info.realVel, info.simulatedVel, info.initialAcceleration, info.damping, info.mass, info.color));
+}
+
+
+Scene2::~Scene2() {}
+
+void 
+Scene2::integrate(double t) {
+	pSys.update(t);
+}
+
+void 
+Scene2::start() {
+	pSys = ParticleSystem();
+
+	GaussianGenerator* gGen = new GaussianGenerator(Vector3(), Vector3(1.0, 0.0, 0.0), 25, 20, 1.0, 1.5, 1.5, 1.5, 1.5);
+	pSys.registerParticleGenerator(gGen, 10);
+}
+
+void 
+Scene2::processKey(unsigned char c, const physx::PxTransform* camera) {
+	return;
 }
