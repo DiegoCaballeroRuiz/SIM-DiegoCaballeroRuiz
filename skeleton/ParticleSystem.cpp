@@ -26,7 +26,7 @@ void
 ParticleSystem::update(double delta) {
 
 	// Remove the dead particles
-	int lastToDelete = particles.size();
+	/*int lastToDelete = particles.size();
 	int n = particles.size();
 	for (int i = 0; i < n; ++i) {
 		if (particles[i]->isAlive()) continue;
@@ -43,11 +43,13 @@ ParticleSystem::update(double delta) {
 		delete particles[i];
 		deleted++;
 	}
-	particles.resize(particles.size() - deleted);
+	particles.resize(particles.size() - deleted);*/
 
 	// Generate new particles
-	for (genInfo gen : generators) 
-		particles.emplace_back(gen.generator->generate(gen.nParticles));
+	for (genInfo gen : generators) {
+		auto newParticles = gen.generator->generate(gen.nParticles);
+		particles.insert(particles.end(), newParticles.begin(), newParticles.end());
+	}
 
 	// Update the remaining particles
 	for (Particle* particle : particles)

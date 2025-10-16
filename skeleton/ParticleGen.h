@@ -11,7 +11,6 @@ protected:
 	double duration, probGen, speed;
 
 	std::mt19937 mt;
-	std::uniform_real_distribution<double> u{ .0, 1.0 };
 public:
 	ParticleGenerator(Vector3 position, Vector3 direction, double speed, double duration, double probGen);
 	virtual ~ParticleGenerator() = 0;

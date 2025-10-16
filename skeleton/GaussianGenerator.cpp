@@ -12,7 +12,8 @@ GaussianGenerator::GaussianGenerator(Vector3 position, Vector3 direction, double
 
 std::vector<Particle*>
 GaussianGenerator::generate(int nParticles) {
-	std::vector<Particle*> particles(nParticles);
+	std::vector<Particle*> particles;
+	particles.assign(nParticles, nullptr);
 
 	for (Particle* particle : particles) {
 		Vector3 pos = position + Vector3(d(mt)) * posVariation;
