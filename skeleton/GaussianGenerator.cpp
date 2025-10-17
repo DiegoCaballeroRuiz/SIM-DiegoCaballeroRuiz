@@ -3,10 +3,10 @@
 #include <PxPhysics.h>
 
 GaussianGenerator::GaussianGenerator(Vector3 position, Vector3 direction, double speed, double duration, double probGen, 
-	double posVariation, double directionVariation, double durationVariation, double speedVariation)
+	double posVariation, double directionVariation, double durationVariation, double speedVariation, Vector4 color)
 
 	: ParticleGenerator(position, direction, speed, duration, probGen), posVariation(posVariation), directionVariation(directionVariation),
-	durationVariation(durationVariation), speedVariation(speedVariation)
+	durationVariation(durationVariation), speedVariation(speedVariation), color(color)
 {
 	std::random_device randomDevice;
 	mt = std::mt19937(randomDevice());
@@ -22,6 +22,6 @@ GaussianGenerator::genParticle() {
 
 	double dur = duration + d(mt) * durationVariation;
 
-	Particle* particle = new Particle(pos, vel, Vector3(0.0, -10.0, 0.0), 0.9, { 1.0, 1.0, 1.0, 1.0 }, dur);
+	Particle* particle = new Particle(pos, vel, Vector3(0.0, -10.0, 0.0), 0.9, color, dur);
 	return particle;
 }
