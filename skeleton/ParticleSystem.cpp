@@ -26,28 +26,21 @@ void
 ParticleSystem::update(double delta) {
 
 	// Remove the dead particles
-	/*int lastToDelete = particles.size();
-	int n = particles.size();
-	for (int i = 0; i < n; ++i) {
-		if (particles[i]->isAlive()) continue;
-
-		lastToDelete--;
-		Particle* temp = particles[lastToDelete];
-		particles[lastToDelete] = particles[i];
-		particles[i] = particles[lastToDelete];
-		n--;
+	for (auto it = particles.begin(); it != particles.end();) {
+		if (*it != nullptr) {
+			if (!(*it)->isAlive()) {
+				Particle* aux = *it;
+				it = particles.erase(it);
+				delete aux;
+			}
+			else ++it;
+		}
+		else it = particles.erase(it);
 	}
-
-	int deleted = 0;
-	for (int i = lastToDelete; i < particles.size(); ++i) {
-		delete particles[i];
-		deleted++;
-	}
-	particles.resize(particles.size() - deleted);*/
 
 	// Generate new particles
 	for (genInfo gen : generators) {
-		auto newParticles = gen.generator->generate(gen.nParticles);
+		std::vector<Particle*> newParticles = gen.generator->generate(gen.nParticles);
 		particles.insert(particles.end(), newParticles.begin(), newParticles.end());
 	}
 

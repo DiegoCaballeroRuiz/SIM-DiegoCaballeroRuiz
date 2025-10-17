@@ -7,6 +7,16 @@ ParticleGenerator::ParticleGenerator(Vector3 position, Vector3 direction, double
 
 ParticleGenerator::~ParticleGenerator() {}
 
+std::vector<Particle*> 
+ParticleGenerator::generate(int nParticles) {
+	std::vector<Particle*> particles;
+	particles.assign(nParticles, nullptr);
+
+	for (Particle*& particle : particles)
+		particle = genParticle();
+
+	return particles;
+}
 
 Vector3 
 ParticleGenerator::getPos() {

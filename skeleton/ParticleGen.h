@@ -11,11 +11,13 @@ protected:
 	double duration, probGen, speed;
 
 	std::mt19937 mt;
+
+	virtual Particle* genParticle() = 0;
 public:
 	ParticleGenerator(Vector3 position, Vector3 direction, double speed, double duration, double probGen);
 	virtual ~ParticleGenerator() = 0;
 
-	virtual std::vector<Particle*> generate(int nParticles) = 0;
+	std::vector<Particle*> generate(int nParticles);
 
 	Vector3 getPos();
 	void setPos(Vector3 newPos);

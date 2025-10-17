@@ -1,6 +1,7 @@
 #include "Scenes.h"
 #include "Proyectile.h"
 #include "GaussianGenerator.h"
+#include "UniformGenerator.h"
 
 void 
 Scene1::integrate(double t) {
@@ -63,8 +64,8 @@ void
 Scene2::start() {
 	pSys = ParticleSystem();
 
-	GaussianGenerator* gGen = new GaussianGenerator(Vector3(), Vector3(1.0, 0.0, 0.0), 25, 20, 1.0, 1.5, 1.5, 1.5, 1.5);
-	pSys.registerParticleGenerator(gGen, 10);
+	UniformGenerator* uGen = new UniformGenerator(Vector3(), Vector3(1.0, 0.0, 0.0), 25, 20, 1.0, 1.5, 1.5, 1.5, 1.5);
+	pSys.registerParticleGenerator(uGen, 1);
 }
 
 void 
