@@ -24,7 +24,6 @@ ParticleSystem::registerParticleGenerator(ParticleGenerator* gen, int nParticles
 
 void 
 ParticleSystem::update(double delta) {
-
 	// Remove the dead particles
 	for (auto it = particles.begin(); it != particles.end();) {
 		if (*it != nullptr) {

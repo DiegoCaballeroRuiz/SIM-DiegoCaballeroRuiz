@@ -14,9 +14,9 @@ GaussianGenerator::GaussianGenerator(Vector3 position, Vector3 direction, double
 
 Particle*
 GaussianGenerator::genParticle() {
-	Vector3 pos = position + Vector3(d(mt)) * posVariation;
+	Vector3 pos = position + Vector3(d(mt), d(mt), d(mt)) * posVariation;
 
-	Vector3 dir = direction + Vector3(d(mt)) * directionVariation;
+	Vector3 dir = direction + Vector3(d(mt), d(mt), d(mt)) * directionVariation;
 	double sp = speed + d(mt) * directionVariation;
 	Vector3 vel = dir * sp;
 

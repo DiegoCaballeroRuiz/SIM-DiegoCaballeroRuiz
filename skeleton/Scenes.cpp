@@ -64,8 +64,10 @@ void
 Scene2::start() {
 	pSys = ParticleSystem();
 
-	UniformGenerator* uGen = new UniformGenerator(Vector3(), Vector3(1.0, 0.0, 0.0), 25, 20, 1.0, 1.5, 1.5, 1.5, 1.5);
-	pSys.registerParticleGenerator(uGen, 1);
+	UniformGenerator* uGen = new UniformGenerator(Vector3(-10, 0.0, 0.0), Vector3(1.0, 0.0, 0.0), 10.0, 1.0, 1.0, 10.0, 6, 1.5, 1.5);
+	GaussianGenerator* gGen = new GaussianGenerator(Vector3(10, 0.0, 0.0), Vector3(1.0, 0.0, 0.0), 10.0, 1.0, 1.0, 10.0, 6, 1.5, 1.5);
+	//pSys.registerParticleGenerator(uGen, 1);
+	pSys.registerParticleGenerator(gGen, 1);
 }
 
 void 
