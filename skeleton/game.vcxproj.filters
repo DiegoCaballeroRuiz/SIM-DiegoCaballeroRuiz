@@ -12,13 +12,13 @@
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="Vector3D.cpp" />
     <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="Proyectile.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Scenes.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="ParticleGen.cpp" />
     <ClCompile Include="GaussianGenerator.cpp" />
     <ClCompile Include="UniformGenerator.cpp" />
+    <ClCompile Include="ForceGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -32,13 +32,13 @@
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="Vector3D.hpp" />
     <ClInclude Include="Particle.hpp" />
-    <ClInclude Include="Proyectile.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scenes.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="ParticleGen.h" />
     <ClInclude Include="GaussianGenerator.h" />
     <ClInclude Include="UniformGenerator.h" />
+    <ClInclude Include="ForceGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

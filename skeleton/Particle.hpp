@@ -5,22 +5,21 @@
 
 class Particle {
 protected:
-	Vector3 velocity, acceleration;
+	Vector3 velocity, forceSum;
 	physx::PxTransform pose;
 	RenderItem* renderItem;
-	double damping;
+	double damping, invMass;
 
 	double lifetime, timeAlive;
 
 public:
-	Particle(Vector3 pos, Vector3 vel, Vector3 accel, double damp, Vector4 color = {1.0, 1.0, 1.0, 1.0}, double lifeTime = 100.0);
+	Particle(Vector3 pos, Vector3 vel, double damp, double mass, Vector4 color = {1.0, 1.0, 1.0, 1.0}, double lifeTime = 100.0);
 	~Particle();
 	
 	void integrate(double t);
-	
-	void setAccel(Vector3 newAccel) { acceleration = newAccel; }
-	Vector3 getAccel() const { return acceleration; }
 	physx::PxTransform* getTransform() { return &pose; }
 
 	bool isAlive() { return timeAlive < lifetime; }
+
+	void addForce(Vector3 force);
 };

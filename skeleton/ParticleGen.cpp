@@ -1,7 +1,7 @@
 #include "ParticleGen.h"
 
-ParticleGenerator::ParticleGenerator(Vector3 position, Vector3 direction, double speed, double duration, double probGen) 
-	: position(position), duration(duration), probGen(probGen), speed(speed), direction(direction)
+ParticleGenerator::ParticleGenerator(Vector3 position, Vector3 direction, double speed, double duration, double probGen, double mass)
+	: position(position), duration(duration), probGen(probGen), speed(speed), direction(direction), mass(mass)
 {
 }
 

@@ -1,9 +1,9 @@
 #include "UniformGenerator.h"
 #include "Particle.hpp"
 
-UniformGenerator::UniformGenerator(Vector3 position, Vector3 direction, double speed, double duration, double probGen
+UniformGenerator::UniformGenerator(Vector3 position, Vector3 direction, double speed, double duration, double probGen, double mass
 	, double posVariation, double directionVariation, double durationVariation, double speedVariation, Vector4 color)
-	: ParticleGenerator(position, direction, speed, duration, probGen), posVariation(posVariation), directionVariation(directionVariation),
+	: ParticleGenerator(position, direction, speed, duration, probGen, mass), posVariation(posVariation), directionVariation(directionVariation),
 	durationVariation(durationVariation), speedVariation(speedVariation), color(color)
 {
 	std::random_device randomDevice;
@@ -20,6 +20,6 @@ UniformGenerator::genParticle() {
 
 	double dur = duration + u(mt) * durationVariation;
 
-	Particle* particle = new Particle(pos, vel, Vector3(0.0, -10.0, 0.0), 0.9, color, dur);
+	Particle* particle = new Particle(pos, vel, 0.0, mass, color, dur);
 	return particle;
 }

@@ -8,13 +8,13 @@ class ParticleGenerator
 {
 protected:
 	Vector3 position, direction;
-	double duration, probGen, speed;
+	double duration, probGen, speed, mass;
 
 	std::mt19937 mt;
 
 	virtual Particle* genParticle() = 0;
 public:
-	ParticleGenerator(Vector3 position, Vector3 direction, double speed, double duration, double probGen);
+	ParticleGenerator(Vector3 position, Vector3 direction, double speed, double duration, double probGen, double mass);
 	virtual ~ParticleGenerator() = 0;
 
 	std::vector<Particle*> generate(int nParticles);

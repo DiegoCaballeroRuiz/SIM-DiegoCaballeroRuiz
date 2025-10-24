@@ -11,7 +11,7 @@ protected:
 
 	Particle* genParticle() override;
 public:
-	UniformGenerator(Vector3 position, Vector3 direction, double speed, double duration, double probGen
+	UniformGenerator(Vector3 position, Vector3 direction, double speed, double duration, double probGen, double mass
 		, double posVariation, double directionVariation, double durationVariation, double speedVariation, Vector4 color = {1.0, 1.0, 1.0, 1.0});
 
 	~UniformGenerator() {}
