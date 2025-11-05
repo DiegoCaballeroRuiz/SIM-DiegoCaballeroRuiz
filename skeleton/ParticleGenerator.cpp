@@ -1,7 +1,7 @@
 #include "ParticleGenerator.h"
 
 ParticleGenerator::ParticleGenerator(Vector3 position, Vector3 direction, double speed, double duration, double probGen, double mass)
-	: position(position), duration(duration), probGen(probGen), speed(speed), direction(direction), mass(mass)
+	: position(Vector3(0.0)), offset(position), duration(duration), probGen(probGen), speed(speed), direction(direction), mass(mass)
 {
 }
 
@@ -10,10 +10,11 @@ ParticleGenerator::~ParticleGenerator() {}
 std::vector<Particle*> 
 ParticleGenerator::generate(int nParticles) {
 	std::vector<Particle*> particles;
-	particles.assign(nParticles, nullptr);
 
-	for (Particle*& particle : particles)
-		particle = genParticle();
+	for (int i = 0; i < nParticles; ++i) {
+		auto particle = genParticle();
+		if (particle != nullptr) particles.push_back(particle);
+	}
 
 	return particles;
 }
@@ -26,6 +27,16 @@ ParticleGenerator::getPos() {
 void 
 ParticleGenerator::setPos(Vector3 newPos) {
 	position = newPos;
+}
+
+Vector3 
+ParticleGenerator::getOffset() {
+	return offset;
+}
+
+void 
+ParticleGenerator::setOffset(Vector3 newOffset) {
+	offset = newOffset;
 }
 
 double 

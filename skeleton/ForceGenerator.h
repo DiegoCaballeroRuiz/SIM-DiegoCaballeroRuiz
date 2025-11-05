@@ -9,11 +9,15 @@ protected:
 	Vector3 force;
 	Vector3 position;
 
+	double time;
+
 public:
 	ForceGenerator(Vector3 force = { 0.0, 0.0, 0.0 });
 	~ForceGenerator();
 
 	virtual void applyForce(Particle* particle) const;
+
+	void update(double dt);
 	void setForce(Vector3 force);
 };
 

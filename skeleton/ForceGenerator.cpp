@@ -1,7 +1,7 @@
 #include "ForceGenerator.h"
 #include "Particle.hpp"
 
-ForceGenerator::ForceGenerator(Vector3 force) : force(force)
+ForceGenerator::ForceGenerator(Vector3 force) : force(force), time(.0)
 {
 }
 
@@ -15,4 +15,9 @@ ForceGenerator::applyForce(Particle* particle) const {
 void 
 ForceGenerator::setForce(Vector3 newForce) {
 	force = newForce;
+}
+
+void 
+ForceGenerator::update(double dt) {
+	time += dt;
 }

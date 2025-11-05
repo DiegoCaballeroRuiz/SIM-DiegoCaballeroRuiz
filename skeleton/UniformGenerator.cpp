@@ -12,6 +12,8 @@ UniformGenerator::UniformGenerator(Vector3 position, Vector3 direction, double s
 
 Particle* 
 UniformGenerator::genParticle() {
+	if (std::abs(u(mt)) > probGen) return nullptr;
+
 	Vector3 pos = position + Vector3(u(mt), u(mt), u(mt)) * posVariation;
 
 	Vector3 dir = direction + Vector3(u(mt), u(mt), u(mt)) * directionVariation;

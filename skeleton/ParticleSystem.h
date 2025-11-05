@@ -47,5 +47,6 @@ public:
 	std::vector<Particle*> getParticles();
 
 	Vector3 getPosition() const;
+	void setPosition(Vector3 newPos);
 };
 

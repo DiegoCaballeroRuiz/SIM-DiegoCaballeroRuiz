@@ -8,7 +8,7 @@ protected:
 	Vector3 velocity, forceSum;
 	physx::PxTransform pose;
 	RenderItem* renderItem;
-	double damping, invMass;
+	double damping, invMass, mass;
 
 	double lifetime, timeAlive;
 	bool markedDead = false;
@@ -24,6 +24,8 @@ public:
 	void kill() { markedDead = true; }
 
 	void addForce(Vector3 force);
+
+	double getMass() const;
 
 	void setStatic();
 };

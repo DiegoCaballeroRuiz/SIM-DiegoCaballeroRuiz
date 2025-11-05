@@ -34,14 +34,11 @@ ParticleSystem::~ParticleSystem() {
 	for (genInfo info : particleGenerators)
 		delete info.generator;
 	particleGenerators.clear();
-
-	for (ForceGenerator* generator : forceGenerators)
-		delete generator;
-	forceGenerators.clear();
 }
 
 void 
 ParticleSystem::registerParticleGenerator(ParticleGenerator* gen, int nParticles) {
+	gen->setPos(gen->getOffset() + pos);
 	particleGenerators.push_back({gen, nParticles});
 }
 
@@ -99,6 +96,8 @@ ParticleSystem::update(double delta) {
 
 	// Generate new particles
 	for (genInfo gen : particleGenerators) {
+		gen.generator->setPos(gen.generator->getOffset() + pos);
+
 		if (!uncappedParticles && gen.nParticles + particles.size() > maxParticles) continue;
 
 		std::vector<Particle*> newParticles = gen.generator->generate(gen.nParticles);
@@ -106,9 +105,11 @@ ParticleSystem::update(double delta) {
 	}
 
 	// Add force to particles
-	for (ForceGenerator* generator : forceGenerators)
+	for (ForceGenerator* generator : forceGenerators) {
+		generator->update(delta);
 		for (Particle* particle : particles)
 			generator->applyForce(particle);
+	}
 	
 	// Update the resulting particles
 	for (Particle* particle : particles)
@@ -123,4 +124,9 @@ ParticleSystem::getParticles() {
 Vector3 
 ParticleSystem::getPosition() const {
 	return pos;
+}
+
+void 
+ParticleSystem::setPosition(Vector3 newPos) {
+	pos = newPos;
 }

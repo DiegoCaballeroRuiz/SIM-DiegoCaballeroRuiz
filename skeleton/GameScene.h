@@ -3,6 +3,8 @@
 #include "Scene.h"
 #include <vector>
 
+#include <queue>
+
 class Cube;
 class ParticleSystem;
 class ParticleGenerator;
@@ -18,8 +20,15 @@ class GameScene : public Scene
 	ForceGenerator* confettiForce;
 	ForceGenerator* gravity;
 
+	ForceGenerator* shootForce;
+	ParticleSystem* ball;
+	ParticleGenerator* ballGen;
+
 	std::vector<ForceGenerator*> forces;
 	bool nextConfettiActivation;
+
+	std::queue<std::pair<ParticleSystem*, ForceGenerator*>> forceToRemove;
+	std::queue<std::pair<ParticleSystem*, ParticleGenerator*>> pGenToRemove;
 
 	void toggleConfetti(bool r);
 	

@@ -14,6 +14,8 @@ GaussianGenerator::GaussianGenerator(Vector3 position, Vector3 direction, double
 
 Particle*
 GaussianGenerator::genParticle() {
+	if (std::abs(d(mt)) > probGen) return nullptr;
+
 	Vector3 pos = position + Vector3(d(mt), d(mt), d(mt)) * posVariation;
 
 	Vector3 dir = direction + Vector3(d(mt), d(mt), d(mt)) * directionVariation;
