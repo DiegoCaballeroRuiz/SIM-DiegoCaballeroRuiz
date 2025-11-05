@@ -7,11 +7,15 @@
 #include "ParticleSystem.h"
 #include "Particle.hpp"
 
-GameScene::GameScene() : Scene(), nextConfettiActivation(true)
+GameScene::GameScene() : Scene(), nextConfettiActivation(true), nextWind(true)
 {
 }
 
 GameScene::~GameScene() {
+	toggleWind(false);
+	toggleRain(false);
+	toggleConfetti(false);
+
 	delete floor;
 	delete wall;
 	delete wallLine;
@@ -19,14 +23,24 @@ GameScene::~GameScene() {
 	delete confetti;
 	for (auto force : forces)
 		delete force;
+	delete confettiCenter;
+	delete confettiForce;
 
 	delete ball;
+	delete shootForce;
+
+	delete wind;
+	delete windForce;
+
+	delete rain;
 }
 
 void 
 GameScene::integrate(double t) {
 	confetti->update(t);
 	ball->update(t);
+	wind->update(t);
+	rain->update(t);
 
 	while (!forceToRemove.empty()) {
 		auto pair = forceToRemove.front();
@@ -67,7 +81,7 @@ GameScene::start() {
 	forces.push_back(gravity);
 	confetti->registerForceGenerator(gravity);
 
-	Particle* center = new Particle(confetti->getPosition(), Vector3(0.0), 0.9, 1, Vector4(1.0, 0.0, 1.0, 1.0));
+	 confettiCenter = new Particle(confetti->getPosition(), Vector3(0.0), 0.9, 1, Vector4(1.0, 0.0, 1.0, 1.0));
 
 	// Tennis ball
 	ball = new ParticleSystem(Vector3(0.0), 1);
@@ -77,6 +91,17 @@ GameScene::start() {
 	shootForce = new ForceGenerator();
 	forces.push_back(shootForce);
 	ball->registerForceGenerator(gravity);
+
+	//Windy weather
+	wind = new ParticleSystem(Vector3(.0));
+	windForce = new ConstantAccelForceGenerator(100, Vector3(-1.0, .0, .0));
+	windGen = new GaussianGenerator(Vector3(.0), Vector3(.0), 5.0, 3.0, .2, .1, 500.0, .0, 1.5, .5, Vector4(1.0, 1.0, 1.0, 1.0));
+	wind->registerForceGenerator(windForce);
+
+	//Rainy weather
+	rain = new ParticleSystem(Vector3(.0, 100, .0));
+	rainGen = new GaussianGenerator(Vector3(.0), Vector3(.0), .0, 30.0, 1.0, .01, 500.0, .0, .0, .0, Vector4(.0, 0.25, 1.0, 1.0));
+	rain->registerForceGenerator(gravity);
 }
 
 void 
@@ -87,9 +112,7 @@ GameScene::processKey(unsigned char c, const physx::PxTransform* camera) {
 		nextConfettiActivation = !nextConfettiActivation;
 		break;
 	case 'f': {
-		Vector3 forceDir = GetCamera()->getDir().getNormalized();
-		Vector3 force = 800.0 * forceDir;
-		shootForce->setForce(force);
+		shootForce->setForce(SHOOT_FORCE * GetCamera()->getDir().getNormalized());
 		ball->setPosition(GetCamera()->getTransform().p);
 		ball->registerForceGenerator(shootForce);
 		ball->registerParticleGenerator(ballGen, 1);
@@ -98,6 +121,14 @@ GameScene::processKey(unsigned char c, const physx::PxTransform* camera) {
 		forceToRemove.push({ ball, shootForce });
 		break;
 	}
+	case 'v':
+		toggleWind(nextWind);
+		nextWind = !nextWind;
+		break;
+	case 'l':
+		toggleRain(nextRain);
+		nextRain= !nextRain;
+		break;
 	}
 }
 
@@ -116,3 +147,30 @@ GameScene::toggleConfetti(bool activate) {
 		confetti->deRegisterForceGenerator(confettiForce);
 	}
 }
+
+void 
+GameScene::toggleWind(bool activate) {
+	if (activate) {
+		wind->registerParticleGenerator(windGen, 20);
+		rain->registerForceGenerator(windForce);
+		ball->registerForceGenerator(windForce);
+		confetti->registerForceGenerator(windForce);
+	}
+
+	else {
+		wind->deRegisterParticleGenerator(windGen);
+		rain->deRegisterForceGenerator(windForce);
+		ball->deRegisterForceGenerator(windForce);
+	}
+}
+
+void 
+GameScene::toggleRain(bool activate) {
+	if (activate)
+		rain->registerParticleGenerator(rainGen, 20);
+	
+	else
+		rain->deRegisterParticleGenerator(rainGen);
+}
+
+

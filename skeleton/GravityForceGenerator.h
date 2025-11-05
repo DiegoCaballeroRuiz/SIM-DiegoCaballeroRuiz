@@ -1,13 +1,10 @@
 #pragma once
-#include "ForceGenerator.h"
+#include "ConstantAccelForceGenerator.h"
 
-class GravityForceGenerator : public ForceGenerator
+class GravityForceGenerator : public ConstantAccelForceGenerator
 {
-	double gravityAccel;
 public:
 	GravityForceGenerator(double gravityAccel);
 	~GravityForceGenerator();
-
-	virtual void applyForce(Particle* particle) const;
 };
 

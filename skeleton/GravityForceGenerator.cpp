@@ -2,16 +2,11 @@
 
 #include "Particle.hpp"
 
-GravityForceGenerator::GravityForceGenerator(double gravityAccel) : ForceGenerator(), gravityAccel(gravityAccel)
+GravityForceGenerator::GravityForceGenerator(double gravityAccel) 
+	: ConstantAccelForceGenerator(gravityAccel, Vector3(.0, -1.0, .0))
 {
 }
 
 GravityForceGenerator::~GravityForceGenerator() 
 {
-}
-
-void 
-GravityForceGenerator::applyForce(Particle* particle) const {
-	Vector3 forceToApply = particle->getMass() * Vector3(.0, -gravityAccel, .0);
-	particle->addForce(forceToApply);
 }
