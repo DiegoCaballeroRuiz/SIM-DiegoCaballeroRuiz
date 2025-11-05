@@ -2,14 +2,14 @@
 #include <vector>
 #include "Scene.h"
 #include "core.hpp"
-#include "ParticleSystem.h"
 
+class ParticleSystem;
 class Scene2 : public Scene {
 private:
-	ParticleSystem pSys;
+	ParticleSystem* pSys;
 
 public:
-	Scene2() : Scene() {}
+	Scene2();
 	~Scene2();
 	void integrate(double t) override;
 	void start() override;

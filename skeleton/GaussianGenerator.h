@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ParticleGen.h"
+#include "ParticleGenerator.h"
 
 class GaussianGenerator : public ParticleGenerator
 {

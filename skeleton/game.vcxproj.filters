@@ -15,10 +15,13 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Scenes.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="ParticleGen.cpp" />
     <ClCompile Include="GaussianGenerator.cpp" />
     <ClCompile Include="UniformGenerator.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
+    <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="ExplosionForceGenerator.cpp" />
+    <ClCompile Include="ParticleGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -35,10 +38,13 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scenes.h" />
     <ClInclude Include="ParticleSystem.h" />
-    <ClInclude Include="ParticleGen.h" />
     <ClInclude Include="GaussianGenerator.h" />
     <ClInclude Include="UniformGenerator.h" />
     <ClInclude Include="ForceGenerator.h" />
+    <ClInclude Include="GameScene.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="ExplosionForceGenerator.h" />
+    <ClInclude Include="ParticleGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

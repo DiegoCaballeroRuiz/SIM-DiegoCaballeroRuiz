@@ -3,11 +3,9 @@
 #include <cmath>
 
 Particle::Particle(Vector3 pos, Vector3 vel, double damp, double mass, Vector4 color, double lifetime) 
-	: velocity(vel), pose(pos), damping(damp), invMass(1/mass), lifetime(lifetime), timeAlive(0.0)
+	: velocity(vel), pose(pos), damping(damp), invMass(std::pow(mass, -1)), lifetime(lifetime), timeAlive(0.0), forceSum(0.0, 0.0, 0.0)
 {
-	const physx::PxSphereGeometry geo = physx::PxSphereGeometry(1.0);
-	physx::PxShape* centreShape = CreateShape(geo);
-	renderItem = new RenderItem(centreShape, &pose, color);
+	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(1.0)), &pose, color);
 }
 
 Particle::~Particle() {
@@ -28,4 +26,9 @@ Particle::integrate(double t) {
 void 
 Particle::addForce(Vector3 force) {
 	forceSum += force;
+}
+
+void 
+Particle::setStatic() {
+	invMass = 0.0;
 }

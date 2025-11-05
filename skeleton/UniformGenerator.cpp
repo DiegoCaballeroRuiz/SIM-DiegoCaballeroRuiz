@@ -20,6 +20,6 @@ UniformGenerator::genParticle() {
 
 	double dur = duration + u(mt) * durationVariation;
 
-	Particle* particle = new Particle(pos, vel, 0.0, mass, color, dur);
+	Particle* particle = new Particle(pos, vel, 0.9, mass, color, dur);
 	return particle;
 }

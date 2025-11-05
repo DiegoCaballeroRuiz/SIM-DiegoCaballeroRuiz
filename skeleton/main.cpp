@@ -8,6 +8,7 @@
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
 #include "Scenes.h"
+#include "GameScene.h"
 
 #include <iostream>
 
@@ -57,7 +58,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	currentScene = new Scene2();
+	currentScene = new GameScene();
 	currentScene->start();
 }
 	

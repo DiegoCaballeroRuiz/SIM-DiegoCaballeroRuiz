@@ -254,11 +254,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="ExplosionForceGenerator.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GaussianGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="ParticleGen.cpp" />
+    <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
@@ -271,10 +274,13 @@
   <ItemGroup>
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="core.hpp" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="ExplosionForceGenerator.h" />
     <ClInclude Include="ForceGenerator.h" />
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="GaussianGenerator.h" />
     <ClInclude Include="Particle.hpp" />
-    <ClInclude Include="ParticleGen.h" />
+    <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
