@@ -25,6 +25,8 @@
     <ClCompile Include="GravityForceGenerator.cpp" />
     <ClCompile Include="TimeExplosionForceGenerator.cpp" />
     <ClCompile Include="ConstantAccelForceGenerator.cpp" />
+    <ClCompile Include="PointProyectileGenerator.cpp" />
+    <ClCompile Include="Proyectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -51,6 +53,8 @@
     <ClInclude Include="GravityForceGenerator.h" />
     <ClInclude Include="TimeExplosionForceGenerator.h" />
     <ClInclude Include="ConstantAccelForceGenerator.h" />
+    <ClInclude Include="Proyectile.h" />
+    <ClInclude Include="PointProyectileGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

@@ -17,7 +17,7 @@ public:
 	Particle(Vector3 pos, Vector3 vel, double damp, double mass, Vector4 color = {1.0, 1.0, 1.0, 1.0}, double lifeTime = 100.0);
 	~Particle();
 	
-	void integrate(double t);
+	virtual void integrate(double t);
 	physx::PxTransform* getTransform() { return &pose; }
 
 	bool isAlive() const { return markedDead || timeAlive < lifetime; }
@@ -26,6 +26,7 @@ public:
 	void addForce(Vector3 force);
 
 	double getMass() const;
+	virtual void setMass(double newMass);
 
 	void setStatic();
 };

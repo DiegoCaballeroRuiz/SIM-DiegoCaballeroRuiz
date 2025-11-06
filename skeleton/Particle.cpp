@@ -36,3 +36,10 @@ double
 Particle::getMass() const {
 	return mass;
 }
+
+void
+Particle::setMass(double newMass) {
+	mass = newMass;
+	invMass = std::pow(mass, -1);
+}
+

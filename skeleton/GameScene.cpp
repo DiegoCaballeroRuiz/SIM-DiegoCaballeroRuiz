@@ -4,6 +4,7 @@
 #include "GaussianGenerator.h"
 #include "ExplosionForceGenerator.h"
 #include "GravityForceGenerator.h"
+#include "PointProyectileGenerator.h"
 #include "ParticleSystem.h"
 #include "Particle.hpp"
 
@@ -24,13 +25,10 @@ GameScene::~GameScene() {
 	for (auto force : forces)
 		delete force;
 	delete confettiCenter;
-	delete confettiForce;
 
 	delete ball;
-	delete shootForce;
 
 	delete wind;
-	delete windForce;
 
 	delete rain;
 }
@@ -81,12 +79,12 @@ GameScene::start() {
 	forces.push_back(gravity);
 	confetti->registerForceGenerator(gravity);
 
-	 confettiCenter = new Particle(confetti->getPosition(), Vector3(0.0), 0.9, 1, Vector4(1.0, 0.0, 1.0, 1.0));
+	confettiCenter = new Particle(confetti->getPosition(), Vector3(0.0), 0.9, 1, Vector4(1.0, 0.0, 1.0, 1.0));
 
 	// Tennis ball
 	ball = new ParticleSystem(Vector3(0.0), 1);
 	ballGen = new GaussianGenerator(Vector3(.0), Vector3(.0), 5.0, 5.0, 1.0, .05, .0, .0, .0, 1.0, { .0, .0, .0, 1.0 });
-
+	proyectileBallGen = new PointProyectileGenerator(Vector3(.0), Vector3(1.0, .0, .0), 40, 25, 5.0, .05, { .0, .0, .0, 1.0 });
 
 	shootForce = new ForceGenerator();
 	forces.push_back(shootForce);
@@ -100,7 +98,7 @@ GameScene::start() {
 
 	//Rainy weather
 	rain = new ParticleSystem(Vector3(.0, 100, .0));
-	rainGen = new GaussianGenerator(Vector3(.0), Vector3(.0), .0, 30.0, 1.0, .01, 500.0, .0, .0, .0, Vector4(.0, 0.25, 1.0, 1.0));
+	rainGen = new GaussianGenerator(Vector3(.0), Vector3(.0), .0, 30.0, 1.0, .01, 200.0, .0, .0, .0, Vector4(.0, 0.25, 1.0, 1.0));
 	rain->registerForceGenerator(gravity);
 }
 
@@ -116,6 +114,7 @@ GameScene::processKey(unsigned char c, const physx::PxTransform* camera) {
 		ball->setPosition(GetCamera()->getTransform().p);
 		ball->registerForceGenerator(shootForce);
 		ball->registerParticleGenerator(ballGen, 1);
+		//ball->registerParticleGenerator(proyectileBallGen, 1);
 
 		pGenToRemove.push({ ball, ballGen });
 		forceToRemove.push({ ball, shootForce });
@@ -160,17 +159,20 @@ GameScene::toggleWind(bool activate) {
 	else {
 		wind->deRegisterParticleGenerator(windGen);
 		rain->deRegisterForceGenerator(windForce);
+		confetti->deRegisterForceGenerator(windForce);
 		ball->deRegisterForceGenerator(windForce);
 	}
 }
 
 void 
 GameScene::toggleRain(bool activate) {
-	if (activate)
-		rain->registerParticleGenerator(rainGen, 20);
-	
-	else
+	if (activate) {
+		rain->registerParticleGenerator(rainGen, 10);
+	}
+
+	else {
 		rain->deRegisterParticleGenerator(rainGen);
+	}
 }
 
 

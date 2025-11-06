@@ -8,6 +8,7 @@
 class Cube;
 class ParticleSystem;
 class ParticleGenerator;
+class Particle;
 class ForceGenerator;
 class GameScene : public Scene 
 {
@@ -24,6 +25,7 @@ class GameScene : public Scene
 	ForceGenerator* shootForce;
 	ParticleSystem* ball;
 	ParticleGenerator* ballGen;
+	ParticleGenerator* proyectileBallGen;
 
 	ParticleSystem* wind;
 	ForceGenerator* windForce;
