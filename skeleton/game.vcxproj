@@ -256,6 +256,7 @@
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="ConstantAccelForceGenerator.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="ElasticForceGenerator.cpp" />
     <ClCompile Include="ExplosionForceGenerator.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -283,6 +284,7 @@
     <ClInclude Include="ConstantAccelForceGenerator.h" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="ElasticForceGenerator.h" />
     <ClInclude Include="ExplosionForceGenerator.h" />
     <ClInclude Include="ForceGenerator.h" />
     <ClInclude Include="GameScene.h" />

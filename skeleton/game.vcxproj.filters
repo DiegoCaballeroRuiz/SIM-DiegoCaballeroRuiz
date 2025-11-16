@@ -29,6 +29,7 @@
     <ClCompile Include="Proyectile.cpp" />
     <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="SpringsScene.cpp" />
+    <ClCompile Include="ElasticForceGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -59,6 +60,7 @@
     <ClInclude Include="PointProyectileGenerator.h" />
     <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="SpringsScene.h" />
+    <ClInclude Include="ElasticForceGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
