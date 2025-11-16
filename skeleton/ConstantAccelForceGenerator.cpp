@@ -8,7 +8,7 @@ ConstantAccelForceGenerator::ConstantAccelForceGenerator(double targetAccel, Vec
 }
 
 void 
-ConstantAccelForceGenerator::applyForce(Particle* particle) const {
+ConstantAccelForceGenerator::applyForce(Particle* particle) {
 	Vector3 forceToApply = particle->getMass() * targetAccel * direction;
 	particle->addForce(forceToApply);
 }

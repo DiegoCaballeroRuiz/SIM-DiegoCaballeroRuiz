@@ -12,6 +12,6 @@ public:
 	ExplosionForceGenerator(Vector3 force, Vector3 position, double radius);
 	~ExplosionForceGenerator() {}
 
-	virtual void applyForce(Particle* particle) const;
+	virtual void applyForce(Particle* particle);
 };
 

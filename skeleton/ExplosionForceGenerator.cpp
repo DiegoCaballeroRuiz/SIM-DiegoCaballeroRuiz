@@ -9,7 +9,7 @@ ExplosionForceGenerator::ExplosionForceGenerator(Vector3 force, Vector3 pos, dou
 }
 
 void 
-ExplosionForceGenerator::applyForce(Particle* particle) const {
+ExplosionForceGenerator::applyForce(Particle* particle) {
 	Vector3 distance = particle->getTransform()->p - position;
 	double quadraticDistanceMagnitude = distance.magnitudeSquared();
 

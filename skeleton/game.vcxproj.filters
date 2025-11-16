@@ -27,6 +27,8 @@
     <ClCompile Include="ConstantAccelForceGenerator.cpp" />
     <ClCompile Include="PointProyectileGenerator.cpp" />
     <ClCompile Include="Proyectile.cpp" />
+    <ClCompile Include="SpringForceGenerator.cpp" />
+    <ClCompile Include="SpringsScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -55,6 +57,8 @@
     <ClInclude Include="ConstantAccelForceGenerator.h" />
     <ClInclude Include="Proyectile.h" />
     <ClInclude Include="PointProyectileGenerator.h" />
+    <ClInclude Include="SpringForceGenerator.h" />
+    <ClInclude Include="SpringsScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

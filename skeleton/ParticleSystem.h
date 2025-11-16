@@ -44,7 +44,7 @@ public:
 
 	void update(double delta);
 
-	std::vector<Particle*> getParticles();
+	std::vector<Particle*>& getParticles();
 
 	Vector3 getPosition() const;
 	void setPosition(Vector3 newPos);

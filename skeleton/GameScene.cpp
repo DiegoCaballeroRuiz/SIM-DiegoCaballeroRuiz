@@ -174,5 +174,3 @@ GameScene::toggleRain(bool activate) {
 		rain->deRegisterParticleGenerator(rainGen);
 	}
 }
-
-

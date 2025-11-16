@@ -116,7 +116,7 @@ ParticleSystem::update(double delta) {
 		particle->integrate(delta);
 }
 
-std::vector<Particle*> 
+std::vector<Particle*>&
 ParticleSystem::getParticles() {
 	return particles;
 }

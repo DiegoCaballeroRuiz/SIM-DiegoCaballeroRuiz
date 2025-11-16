@@ -9,7 +9,7 @@ TimeExplosionForceGenerator::TimeExplosionForceGenerator(double forceMagnitude, 
 }
 
 void 
-TimeExplosionForceGenerator::applyForce(Particle* particle) const {
+TimeExplosionForceGenerator::applyForce(Particle* particle)  {
 	Vector3 distance = particle->getTransform()->p - position;
 	double quadraticDistanceMagnitude = distance.magnitudeSquared();
 

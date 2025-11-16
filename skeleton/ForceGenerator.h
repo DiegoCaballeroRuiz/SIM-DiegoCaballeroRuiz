@@ -15,7 +15,7 @@ public:
 	ForceGenerator(Vector3 force = { 0.0, 0.0, 0.0 });
 	~ForceGenerator();
 
-	virtual void applyForce(Particle* particle) const;
+	virtual void applyForce(Particle* particle);
 
 	void update(double dt);
 	void setForce(Vector3 force);

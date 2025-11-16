@@ -10,6 +10,6 @@ public:
 	TimeExplosionForceGenerator(double forceMagnitude, double radius, double activationTime);
 	~TimeExplosionForceGenerator() {}
 
-	void applyForce(Particle* particle) const override;
+	void applyForce(Particle* particle) override;
 };
 

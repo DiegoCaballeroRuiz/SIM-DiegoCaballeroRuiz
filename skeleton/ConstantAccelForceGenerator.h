@@ -10,7 +10,7 @@ public:
 	ConstantAccelForceGenerator(double targetAccel, Vector3 direction);
 	~ConstantAccelForceGenerator() {}
 
-	void applyForce(Particle* particle) const override;
+	void applyForce(Particle* particle) override;
 
 	double getTargetAccel() const;
 	void setTargetAccel(double targetAccel);

@@ -8,7 +8,7 @@ ForceGenerator::ForceGenerator(Vector3 force) : force(force), time(.0)
 ForceGenerator::~ForceGenerator() {}
 
 void 
-ForceGenerator::applyForce(Particle* particle) const {
+ForceGenerator::applyForce(Particle* particle) {
 	particle->addForce(force);
 }
 
