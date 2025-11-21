@@ -258,6 +258,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="ElasticForceGenerator.cpp" />
     <ClCompile Include="ExplosionForceGenerator.cpp" />
+    <ClCompile Include="FlotationForceGenerator.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GaussianGenerator.cpp" />
@@ -286,6 +287,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="ElasticForceGenerator.h" />
     <ClInclude Include="ExplosionForceGenerator.h" />
+    <ClInclude Include="FlotationForceGenerator.h" />
     <ClInclude Include="ForceGenerator.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GaussianGenerator.h" />

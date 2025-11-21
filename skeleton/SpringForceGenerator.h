@@ -10,11 +10,10 @@ protected:
 	std::unordered_map<Particle*, Particle*> anchors;
 public:
 	SpringForceGenerator(double k, double restingLength);
-	~SpringForceGenerator();
+	virtual ~SpringForceGenerator();
 
 	virtual void applyForce(Particle* particle) override;
 	void attachParticle(Particle* affected, Particle* anchor);
 	void setK(double k);
 	double getK() const;
 };
-

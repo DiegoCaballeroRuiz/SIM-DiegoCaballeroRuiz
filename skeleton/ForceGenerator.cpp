@@ -1,7 +1,7 @@
 #include "ForceGenerator.h"
 #include "Particle.hpp"
 
-ForceGenerator::ForceGenerator(Vector3 force) : force(force), time(.0)
+ForceGenerator::ForceGenerator(Vector3 force, Vector3 pos) : force(force), position(pos), time(.0)
 {
 }
 

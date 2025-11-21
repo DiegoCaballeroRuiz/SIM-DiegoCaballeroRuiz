@@ -4,7 +4,7 @@
 #include <cmath>
 
 ExplosionForceGenerator::ExplosionForceGenerator(Vector3 force, Vector3 pos, double radius) 
-	: ForceGenerator(force), position(pos), radius(radius)
+	: ForceGenerator(force, pos), radius(radius)
 {
 }
 
