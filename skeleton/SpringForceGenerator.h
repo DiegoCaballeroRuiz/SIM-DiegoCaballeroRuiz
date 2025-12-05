@@ -13,6 +13,8 @@ public:
 	virtual ~SpringForceGenerator();
 
 	virtual void applyForce(Particle* particle) override;
+	void applyForce(physx::PxRigidBody* solid) override;
+
 	void attachParticle(Particle* affected, Particle* anchor);
 	void setK(double k);
 	double getK() const;

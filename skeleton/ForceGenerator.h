@@ -16,6 +16,7 @@ public:
 	~ForceGenerator();
 
 	virtual void applyForce(Particle* particle);
+	virtual void applyForce(physx::PxRigidBody* solid);
 
 	void update(double dt);
 	void setForce(Vector3 force);

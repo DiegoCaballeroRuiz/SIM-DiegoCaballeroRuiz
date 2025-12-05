@@ -11,5 +11,7 @@ public:
 	~TimeExplosionForceGenerator() {}
 
 	void applyForce(Particle* particle) override;
+	void applyForce(physx::PxRigidBody* solid) override;
+
 };
 

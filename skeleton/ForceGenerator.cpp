@@ -13,6 +13,12 @@ ForceGenerator::applyForce(Particle* particle) {
 }
 
 void 
+ForceGenerator::applyForce(physx::PxRigidBody* solid) {
+	solid->addForce(force);
+}
+
+
+void 
 ForceGenerator::setForce(Vector3 newForce) {
 	force = newForce;
 }
