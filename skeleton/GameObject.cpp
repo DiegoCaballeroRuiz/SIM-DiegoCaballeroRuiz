@@ -1,9 +1,8 @@
 #include "GameObject.h"
 
-GameObject::GameObject(Vector3 pos, double mass, physx::PxGeometry geo, Vector4 color, double lifeTime) 
-	: pose(pos), lifetime(lifeTime), timeAlive(.0)
+GameObject::GameObject(Vector4 color, double lifeTime) 
+	: lifetime(lifeTime), timeAlive(.0), shape(shape)
 {
-	renderItem = new RenderItem(CreateShape(geo), &pose, color);
 }
 
 GameObject::~GameObject() {

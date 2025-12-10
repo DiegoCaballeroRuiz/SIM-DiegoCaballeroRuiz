@@ -1,22 +1,22 @@
 #pragma once
 #include <PxPhysics.h>
 #include "RenderUtils.hpp"
+#include <PxPhysicsAPI.h>
 
 class GameObject
 {
 protected:
-	physx::PxTransform pose;
 	RenderItem* renderItem;
 
 	double lifetime, timeAlive;
 	bool markedDead = false;
+	physx::PxShape* shape;
 public:
-	GameObject(Vector3 pos, double mass, physx::PxGeometry geo = physx::PxSphereGeometry(.5), Vector4 color = { 1.0, 1.0, 1.0, 1.0 }, double lifeTime = 100.0);
+	GameObject(Vector4 color = { 1.0, 1.0, 1.0, 1.0 }, double lifeTime = 100.0);
 	~GameObject();
 
 	virtual void integrate(double delta);
 
-	inline physx::PxTransform* getTransform() { return &pose; }
 	bool isAlive() const { return markedDead || timeAlive < lifetime; }
 
 	inline void kill() { markedDead = true; }
@@ -25,5 +25,6 @@ public:
 
 	virtual double getMass() const = 0;
 	virtual void setMass(double newMass) = 0;
+	virtual physx::PxTransform* getTransform() = 0;
 };
 

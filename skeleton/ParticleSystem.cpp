@@ -130,8 +130,8 @@ ParticleSystem::update(double delta) {
 
 		if (!uncappedParticles && gen.nSolids + gObjects.size() > maxParticles) continue;
 
-		std::vector<GameObject*> newParticles = gen.generator->generate(gen.nSolids);
-		gObjects.insert(gObjects.end(), newParticles.begin(), newParticles.end());
+		std::vector<GameObject*> newSolids = gen.generator->generate(gen.nSolids);
+		gObjects.insert(gObjects.end(), newSolids.begin(), newSolids.end());
 	}
 
 	// Add force to GameObjects

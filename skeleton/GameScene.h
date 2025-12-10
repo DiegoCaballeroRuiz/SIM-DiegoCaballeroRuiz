@@ -9,13 +9,14 @@ class Cube;
 class ParticleSystem;
 class ParticleGenerator;
 class SolidGenerator;
+class StaticSolid;
 class Particle;
 class ForceGenerator;
 class GameScene : public Scene 
 {
-	Cube* floor;
-	Cube* wall;
-	Cube* wallLine;
+	StaticSolid* floor;
+	StaticSolid* wall;
+	StaticSolid* wallLine;
 
 	ParticleSystem* confetti;
 	Particle* confettiCenter;

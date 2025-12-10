@@ -280,6 +280,7 @@
     <ClCompile Include="SolidGenerator.cpp" />
     <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="SpringsScene.cpp" />
+    <ClCompile Include="StaticSolid.cpp" />
     <ClCompile Include="TimeExplosionForceGenerator.cpp" />
     <ClCompile Include="UniformGenerator.cpp" />
     <ClCompile Include="Vector3D.cpp" />
@@ -312,6 +313,7 @@
     <ClInclude Include="SolidGenerator.h" />
     <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="SpringsScene.h" />
+    <ClInclude Include="StaticSolid.h" />
     <ClInclude Include="TimeExplosionForceGenerator.h" />
     <ClInclude Include="UniformGenerator.h" />
     <ClInclude Include="Vector3D.hpp" />

@@ -7,6 +7,7 @@ protected:
 	Vector3 velocity, forceSum;
 
 	double damping, invMass, mass;
+	physx::PxTransform pose;
 
 public:
 	Particle(Vector3 pos, Vector3 vel, double damp, double mass, Vector4 color = {1.0, 1.0, 1.0, 1.0}, double lifeTime = 100.0);
@@ -17,6 +18,7 @@ public:
 	void addForce(Vector3 force) override;
 
 	inline double getMass() const override { return mass; }
+	inline physx::PxTransform* getTransform() override { return &pose; }
 	virtual void setMass(double newMass) override;
 
 	void setStatic();

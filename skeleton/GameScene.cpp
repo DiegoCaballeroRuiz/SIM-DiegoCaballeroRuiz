@@ -6,6 +6,7 @@
 #include "GravityForceGenerator.h"
 #include "PointProyectileGenerator.h"
 #include "ParticleSystem.h"
+#include "StaticSolid.h"
 #include "Particle.hpp"
 #include "GaussianSolidGenerator.h"
 
@@ -48,9 +49,12 @@ GameScene::integrate(double t) {
 void 
 GameScene::start() {
 	// Game Objects
-	floor = new Cube(Vector3(0), { 0.8, 0.8, 0.25, 1.0 }, 1000.0, .2, 1000.0);
+	/*floor = new Cube(Vector3(0), { 0.8, 0.8, 0.25, 1.0 }, 1000.0, .2, 1000.0);
 	wall = new Cube(Vector3(0.0, 100.0, -100), { 0.0, 0.8, 0.2, 1.0 }, 1000.0, 200.0, 1.0);
-	wallLine = new Cube(Vector3(0.0, 10, -100), { .0, .0, .0, 1.0 }, 1000.0, 5, 1.5);
+	wallLine = new Cube(Vector3(0.0, 10, -100), { .0, .0, .0, 1.0 }, 1000.0, 5, 1.5);*/
+	floor = new StaticSolid(Vector3(.0), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(1000.0, .2, 1000.0)), { 0.8, 0.8, 0.25, 1.0 });
+	wall = new StaticSolid(Vector3(.0), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(1000.0, 200.0, 1.0)), { 0.0, 0.8, 0.2, 1.0 });
+	wallLine = new StaticSolid(Vector3(.0), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(1000.0, 5, 1.5)), { .0, .0, .0, 1.0 });
 
 	//Set gravitational force
 	gravity = new GravityForceGenerator(10.0);
@@ -73,7 +77,7 @@ GameScene::start() {
 
 	// Tennis ball
 	ball = new ParticleSystem(Vector3(0.0), 1);
-	ballGen = new GaussianSolidGenerator(Vector3(.0), 1.0, .2, gScene, gPhysics, physx::PxSphereGeometry(.5), Vector4{ 1.0, 1.0, .2, 1.0});
+	ballGen = new GaussianSolidGenerator(Vector3(.0), 10.0, .02, .0, 5.0, gScene, gPhysics, CreateShape(physx::PxSphereGeometry(1.)), Vector4{ 1.0, 1.0, .2, 1.0 });
 	proyectileBallGen = new PointProyectileGenerator(Vector3(.0), Vector3(1.0, .0, .0), 40, 25, 5.0, .05, { .0, .0, .0, 1.0 });
 
 	shootForce = new ForceGenerator();
@@ -100,7 +104,8 @@ GameScene::processKey(unsigned char c, const physx::PxTransform* camera) {
 		nextConfettiActivation = !nextConfettiActivation;
 		break;
 	case 'f': {
-		shootForce->setForce(SHOOT_FORCE * GetCamera()->getDir().getNormalized());
+		auto force = SHOOT_FORCE * GetCamera()->getDir().getNormalized();
+		shootForce->setForce(force);
 		ball->setPosition(GetCamera()->getTransform().p);
 		ball->registerForceGenerator(shootForce);
 		ball->registerSolidGenerator(ballGen, 1);

@@ -1,10 +1,14 @@
 #include "Solid.h"
 
-Solid::Solid(Vector3 pos, double mass, physx::PxPhysics* gPhysics, physx::PxScene* mScene, physx::PxGeometry geo, Vector4 color, double lifeTime)
-	: GameObject(pos, mass, geo, color, lifetime)
+#include "PxRigidDynamic.h"
+
+Solid::Solid(Vector3 pos, double mass, physx::PxPhysics* gPhysics, physx::PxScene* mScene, physx::PxShape* shape, Vector4 color, double lifeTime)
+	: GameObject(color, lifeTime)
 {
-	body = gPhysics->createRigidDynamic(pose);
-	body->attachShape(*renderItem->shape);
+	body = gPhysics->createRigidDynamic(physx::PxTransform(pos));
+	body->attachShape(*shape);
+	renderItem = new RenderItem(shape, body, color);
+	body->setMass(mass);
 
 	body->setLinearDamping(.9);
 	physx::PxRigidBodyExt::setMassAndUpdateInertia(*body, mass);
@@ -23,5 +27,9 @@ Solid::~Solid()
 void 
 Solid::addForce(Vector3 force) {
 	body->addForce(force);
+}
+void 
+Solid::integrate(double dt) {
+	GameObject::integrate(dt);
 }
 

@@ -35,6 +35,7 @@
     <ClCompile Include="GaussianSolidGenerator.cpp" />
     <ClCompile Include="Solid.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="StaticSolid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="GaussianSolidGenerator.h" />
     <ClInclude Include="Solid.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="StaticSolid.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
