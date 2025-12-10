@@ -11,20 +11,21 @@ SpringForceGenerator::~SpringForceGenerator() {}
 
 
 void 
-SpringForceGenerator::applyForce(Particle* particle)  {
-	if (!anchors.count(particle)) return;
+SpringForceGenerator::applyForce(GameObject* gObject)  {
+	if (!anchors.count(gObject)) return;
 
-	Vector3 distance = particle->getTransform()->p - anchors[particle]->getTransform()->p;
+	Vector3 distance = gObject->getTransform()->p - anchors[gObject]->getTransform()->p;
 	double distanceMagnitude = distance.magnitude();
 	Vector3 direction = distance.getNormalized();
 
 	Vector3 force = -k * (distanceMagnitude - restingLength) * direction;
 
-	particle->addForce(force);
+	gObject->addForce(force);
 }
 
+
 void 
-SpringForceGenerator::attachParticle(Particle* affected, Particle* anchor) {
+SpringForceGenerator::attachParticle(GameObject* affected, GameObject* anchor) {
 	anchors[affected] = anchor;
 }
 

@@ -260,8 +260,10 @@
     <ClCompile Include="ExplosionForceGenerator.cpp" />
     <ClCompile Include="FlotationForceGenerator.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GaussianGenerator.cpp" />
+    <ClCompile Include="GaussianSolidGenerator.cpp" />
     <ClCompile Include="GravityForceGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -274,6 +276,8 @@
     <ClCompile Include="Render\Render.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Scenes.cpp" />
+    <ClCompile Include="Solid.cpp" />
+    <ClCompile Include="SolidGenerator.cpp" />
     <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="SpringsScene.cpp" />
     <ClCompile Include="TimeExplosionForceGenerator.cpp" />
@@ -289,8 +293,10 @@
     <ClInclude Include="ExplosionForceGenerator.h" />
     <ClInclude Include="FlotationForceGenerator.h" />
     <ClInclude Include="ForceGenerator.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GaussianGenerator.h" />
+    <ClInclude Include="GaussianSolidGenerator.h" />
     <ClInclude Include="GravityForceGenerator.h" />
     <ClInclude Include="Particle.hpp" />
     <ClInclude Include="ParticleGenerator.h" />
@@ -302,6 +308,8 @@
     <ClInclude Include="Render\Render.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scenes.h" />
+    <ClInclude Include="Solid.h" />
+    <ClInclude Include="SolidGenerator.h" />
     <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="SpringsScene.h" />
     <ClInclude Include="TimeExplosionForceGenerator.h" />

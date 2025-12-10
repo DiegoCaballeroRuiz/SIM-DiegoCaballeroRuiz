@@ -6,7 +6,7 @@
 #include "Particle.hpp"
 #include "GravityForceGenerator.h"
 
-SpringsScene::SpringsScene() {}
+SpringsScene::SpringsScene(physx::PxScene* scene, physx::PxPhysics* physics) : Scene(scene, physics) {}
 
 SpringsScene::~SpringsScene() {
 	delete pSys;
@@ -35,9 +35,9 @@ SpringsScene::start() {
 
 	gravity = new GravityForceGenerator(9.8);
 
-	pSys->getParticles().push_back(affected);
-	pSys->getParticles().push_back(affected2);
-	pSys->getParticles().push_back(anchor);
+	pSys->getObjects().push_back(affected);
+	pSys->getObjects().push_back(affected2);
+	pSys->getObjects().push_back(anchor);
 
 	pSys->registerForceGenerator(springGen);
 	//pSys->registerForceGenerator(gravity);

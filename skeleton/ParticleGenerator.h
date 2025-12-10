@@ -1,8 +1,10 @@
 #pragma once
+
 #include <random>
 #include "core.hpp"
 #include <vector>
 
+class GameObject;
 class Particle;
 class ParticleGenerator
 {
@@ -17,7 +19,7 @@ public:
 	ParticleGenerator(Vector3 positionOffset, Vector3 direction, double speed, double duration, double probGen, double mass);
 	virtual ~ParticleGenerator() = 0;
 
-	std::vector<Particle*> generate(int nParticles);
+	std::vector<GameObject*> generate(int nParticles);
 
 	Vector3 getPos();
 	void setPos(Vector3 newPos);

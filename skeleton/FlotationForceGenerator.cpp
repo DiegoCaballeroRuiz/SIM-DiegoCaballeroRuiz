@@ -10,14 +10,14 @@ FlotationForceGenerator::FlotationForceGenerator(double liquidHeight, double vol
 FlotationForceGenerator::~FlotationForceGenerator() {}
 
 void 
-FlotationForceGenerator::applyForce(Particle* particle) {
+FlotationForceGenerator::applyForce(GameObject* gObject) {
 	double inmersed;
 
-	double particleYPos = particle->getTransform()->p.y;
+	double particleYPos = gObject->getTransform()->p.y;
 
 	if (particleYPos - height > particleHeightHalf) inmersed = .0;
 	else if (height - particleYPos > particleHeightHalf) inmersed = 1.0;
 	else inmersed = (height - position.y) / (particleHeightHalf * 2);
 
-	particle->addForce(Vector3(.0, density * volume * inmersed * gravity, .0));
+	gObject->addForce(Vector3(.0, density * volume * inmersed * gravity, .0));
 }

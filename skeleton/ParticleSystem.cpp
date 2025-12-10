@@ -1,8 +1,11 @@
 #include "ParticleSystem.h"
 
 #include "ParticleGenerator.h"
+#include "SolidGenerator.h"
 #include "ForceGenerator.h"
+#include "GameObject.h"
 #include "Particle.hpp"
+#include "Solid.h"
 
 #include <cmath>
 
@@ -28,11 +31,11 @@ ParticleSystem::ParticleSystem(Vector3 pos, double range)
 }
 
 ParticleSystem::~ParticleSystem() {
-	for (Particle* particle : particles)
-		delete particle;
-	particles.clear();
+	for (auto gObject : gObjects)
+		delete gObject;
+	gObjects.clear();
 
-	for (genInfo info : particleGenerators)
+	for (pGenInfo info : particleGenerators)
 		delete info.generator;
 	particleGenerators.clear();
 }
@@ -48,6 +51,22 @@ ParticleSystem::deRegisterParticleGenerator(ParticleGenerator* gen) {
 	for (auto it = particleGenerators.begin(); it != particleGenerators.end();) {
 		if (it->generator == gen) {
 			it = particleGenerators.erase(it);
+		}
+		else ++it;
+	}
+}
+
+void 
+ParticleSystem::registerSolidGenerator(SolidGenerator* gen, int nParticles) {
+	gen->setPos(gen->getOffset() + pos);
+	solidGenerators.push_back({ gen, nParticles });
+}
+
+void 
+ParticleSystem::deRegisterSolidGenerator(SolidGenerator* gen) {
+	for (auto it = solidGenerators.begin(); it != solidGenerators.end();) {
+		if (it->generator == gen) {
+			it = solidGenerators.erase(it);
 		}
 		else ++it;
 	}
@@ -70,56 +89,61 @@ ParticleSystem::deRegisterForceGenerator(ForceGenerator* gen) {
 
 void 
 ParticleSystem::update(double delta) {
-	// Kill particles outside AOE
+	// Kill GameObjects outside AOE
 	if (!uncappedRange) {
-		for (Particle* particle : particles) {
+		for (auto gObject : gObjects) {
 			double distance = 
-				std::pow(pos.x - particle->getTransform()->p.x, 2) + 
-				std::pow(pos.y - particle->getTransform()->p.y, 2) + 
-				std::pow(pos.z - particle->getTransform()->p.z, 2);
+				std::pow(pos.x - gObject->getTransform()->p.x, 2) + 
+				std::pow(pos.y - gObject->getTransform()->p.y, 2) + 
+				std::pow(pos.z - gObject->getTransform()->p.z, 2);
 
-			if (distance > range) particle->kill();
+			if (distance > range) gObject->kill();
 		}
 	}
 
-	// Remove the dead particles
-	for (auto it = particles.begin(); it != particles.end();) {
+	// Remove the dead GameObjects
+	for (auto it = gObjects.begin(); it != gObjects.end();) {
 		if (*it != nullptr) {
 			if (!(*it)->isAlive()) {
-				Particle* aux = *it;
-				it = particles.erase(it);
+				auto aux = *it;
+				it = gObjects.erase(it);
 				delete aux;
 			}
 			else ++it;
 		}
-		else it = particles.erase(it);
+		else it = gObjects.erase(it);
 	}
 
 	// Generate new particles
-	for (genInfo gen : particleGenerators) {
+	for (pGenInfo gen : particleGenerators) {
 		gen.generator->setPos(gen.generator->getOffset() + pos);
 
-		if (!uncappedParticles && gen.nParticles + particles.size() > maxParticles) continue;
+		if (!uncappedParticles && gen.nParticles + gObjects.size() > maxParticles) continue;
 
-		std::vector<Particle*> newParticles = gen.generator->generate(gen.nParticles);
-		particles.insert(particles.end(), newParticles.begin(), newParticles.end());
+		std::vector<GameObject*> newParticles = gen.generator->generate(gen.nParticles);
+		gObjects.insert(gObjects.end(), newParticles.begin(), newParticles.end());
 	}
 
-	// Add force to particles
+	//Generate new solids
+	for (sGenInfo gen : solidGenerators) {
+		gen.generator->setPos(gen.generator->getOffset() + pos);
+
+		if (!uncappedParticles && gen.nSolids + gObjects.size() > maxParticles) continue;
+
+		std::vector<GameObject*> newParticles = gen.generator->generate(gen.nSolids);
+		gObjects.insert(gObjects.end(), newParticles.begin(), newParticles.end());
+	}
+
+	// Add force to GameObjects
 	for (ForceGenerator* generator : forceGenerators) {
 		generator->update(delta);
-		for (Particle* particle : particles)
-			generator->applyForce(particle);
+		for (auto gObject : gObjects)
+			generator->applyForce(gObject);
 	}
 	
-	// Update the resulting particles
-	for (Particle* particle : particles)
-		particle->integrate(delta);
-}
-
-std::vector<Particle*>&
-ParticleSystem::getParticles() {
-	return particles;
+	// Update the resulting GameObjects
+	for (auto gObject : gObjects)
+		gObject->integrate(delta);
 }
 
 Vector3 

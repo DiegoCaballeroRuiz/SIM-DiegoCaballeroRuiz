@@ -1,6 +1,7 @@
 #include "ElasticForceGenerator.h"
 
 #include "Particle.hpp"
+#include "Solid.h"
 
 ElasticForceGenerator::ElasticForceGenerator(double k, double restingLength) 
 	: SpringForceGenerator(k, restingLength)
@@ -8,10 +9,10 @@ ElasticForceGenerator::ElasticForceGenerator(double k, double restingLength)
 }
 
 void 
-ElasticForceGenerator::applyForce(Particle* particle) {
-	if (!anchors.count(particle)) return;
-
-	Vector3 distance = particle->getTransform()->p - anchors[particle]->getTransform()->p;
+ElasticForceGenerator::applyForce(GameObject* gObject) {
+	if (!anchors.count(gObject)) return;
+	
+	Vector3 distance = gObject->getTransform()->p - anchors[gObject]->getTransform()->p;
 	double distanceMagnitude = distance.magnitude();
 	Vector3 direction = distance.getNormalized();
 
@@ -20,5 +21,6 @@ ElasticForceGenerator::applyForce(Particle* particle) {
 
 	Vector3 force = -k * deltaX * direction;
 
-	particle->addForce(force);
+	gObject->addForce(force);
 }
+

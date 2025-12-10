@@ -7,8 +7,10 @@
 #include "PointProyectileGenerator.h"
 #include "ParticleSystem.h"
 #include "Particle.hpp"
+#include "GaussianSolidGenerator.h"
 
-GameScene::GameScene() : Scene(), nextConfettiActivation(true), nextWind(true)
+GameScene::GameScene(physx::PxScene* scene, physx::PxPhysics* physics) 
+	: Scene(scene, physics), nextConfettiActivation(true), nextWind(true)
 {
 }
 
@@ -40,19 +42,7 @@ GameScene::integrate(double t) {
 	wind->update(t);
 	rain->update(t);
 
-	while (!forceToRemove.empty()) {
-		auto pair = forceToRemove.front();
-		forceToRemove.pop();
-
-		pair.first->deRegisterForceGenerator(pair.second);
-	}
-
-	while (!pGenToRemove.empty()) {
-		auto pair = pGenToRemove.front();
-		pGenToRemove.pop();
-
-		pair.first->deRegisterParticleGenerator(pair.second);
-	}
+	processRemovals();
 }
 
 void 
@@ -83,7 +73,7 @@ GameScene::start() {
 
 	// Tennis ball
 	ball = new ParticleSystem(Vector3(0.0), 1);
-	ballGen = new GaussianGenerator(Vector3(.0), Vector3(.0), 5.0, 5.0, 1.0, .05, .0, .0, .0, 1.0, { .0, .0, .0, 1.0 });
+	ballGen = new GaussianSolidGenerator(Vector3(.0), 1.0, .2, gScene, gPhysics, physx::PxSphereGeometry(.5), Vector4{ 1.0, 1.0, .2, 1.0});
 	proyectileBallGen = new PointProyectileGenerator(Vector3(.0), Vector3(1.0, .0, .0), 40, 25, 5.0, .05, { .0, .0, .0, 1.0 });
 
 	shootForce = new ForceGenerator();
@@ -113,10 +103,9 @@ GameScene::processKey(unsigned char c, const physx::PxTransform* camera) {
 		shootForce->setForce(SHOOT_FORCE * GetCamera()->getDir().getNormalized());
 		ball->setPosition(GetCamera()->getTransform().p);
 		ball->registerForceGenerator(shootForce);
-		ball->registerParticleGenerator(ballGen, 1);
-		//ball->registerParticleGenerator(proyectileBallGen, 1);
+		ball->registerSolidGenerator(ballGen, 1);
 
-		pGenToRemove.push({ ball, ballGen });
+		sGenToRemove.push({ ball, ballGen });
 		forceToRemove.push({ ball, shootForce });
 		break;
 	}
@@ -172,5 +161,29 @@ GameScene::toggleRain(bool activate) {
 
 	else {
 		rain->deRegisterParticleGenerator(rainGen);
+	}
+}
+
+void 
+GameScene::processRemovals() {
+	while (!forceToRemove.empty()) {
+		auto pair = forceToRemove.front();
+		forceToRemove.pop();
+
+		pair.first->deRegisterForceGenerator(pair.second);
+	}
+
+	while (!pGenToRemove.empty()) {
+		auto pair = pGenToRemove.front();
+		pGenToRemove.pop();
+
+		pair.first->deRegisterParticleGenerator(pair.second);
+	}
+
+	while (!sGenToRemove.empty()) {
+		auto pair = sGenToRemove.front();
+		sGenToRemove.pop();
+
+		pair.first->deRegisterSolidGenerator(pair.second);
 	}
 }

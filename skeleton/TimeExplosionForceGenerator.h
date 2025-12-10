@@ -10,8 +10,6 @@ public:
 	TimeExplosionForceGenerator(double forceMagnitude, double radius, double activationTime);
 	~TimeExplosionForceGenerator() {}
 
-	void applyForce(Particle* particle) override;
-	void applyForce(physx::PxRigidBody* solid) override;
-
+	void applyForce(GameObject* gObject) override;
 };
 

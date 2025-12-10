@@ -2,7 +2,7 @@
 
 #include "RenderUtils.hpp"
 
-class Particle;
+class GameObject;
 class ForceGenerator
 {
 protected:
@@ -15,8 +15,7 @@ public:
 	ForceGenerator(Vector3 force = { 0.0, 0.0, 0.0 }, Vector3 position = {.0, .0, .0});
 	~ForceGenerator();
 
-	virtual void applyForce(Particle* particle);
-	virtual void applyForce(physx::PxRigidBody* solid);
+	virtual void applyForce(GameObject* gObject);
 
 	void update(double dt);
 	void setForce(Vector3 force);

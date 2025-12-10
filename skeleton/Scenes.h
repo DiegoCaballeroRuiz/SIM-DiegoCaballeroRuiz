@@ -9,7 +9,7 @@ private:
 	ParticleSystem* pSys;
 
 public:
-	Scene2();
+	Scene2(physx::PxScene* scene, physx::PxPhysics* physics);
 	~Scene2();
 	void integrate(double t) override;
 	void start() override;

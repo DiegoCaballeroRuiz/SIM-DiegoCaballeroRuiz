@@ -7,16 +7,25 @@
 class Particle;
 class ParticleGenerator;
 class ForceGenerator;
+class SolidGenerator;
+class GameObject;
 
 class ParticleSystem
 {
-	struct genInfo {
+	struct pGenInfo {
 		ParticleGenerator* generator;
 		int nParticles;
 	};
+
+	struct sGenInfo {
+		SolidGenerator* generator;
+		int nSolids;
+	};
+
 protected:
-	std::vector<Particle*> particles;
-	std::vector<genInfo> particleGenerators;
+	std::vector<GameObject*> gObjects;
+	std::vector<pGenInfo> particleGenerators;
+	std::vector<sGenInfo> solidGenerators;
 	std::vector<ForceGenerator*> forceGenerators;
 
 	int maxParticles;
@@ -25,6 +34,8 @@ protected:
 	Vector3 pos;
 	double range;
 	bool uncappedRange;
+
+	physx::PxScene* gScene;
 
 public:
 	ParticleSystem(Vector3 pos);
@@ -38,13 +49,17 @@ public:
 	/// NO LO BORRA !!!!!!!!!!!!!!!!
 	void deRegisterParticleGenerator(ParticleGenerator* gen);
 
+	void registerSolidGenerator(SolidGenerator* gen, int nParticles);
+	/// NO LO BORRA !!!!!!!!!!!!!!!!
+	void deRegisterSolidGenerator(SolidGenerator* gen);
+
 	void registerForceGenerator(ForceGenerator* gen);
 	/// NO LO BORRA !!!!!!!!!!!!!!!!
 	void deRegisterForceGenerator(ForceGenerator* gen);
 
 	void update(double delta);
 
-	std::vector<Particle*>& getParticles();
+	inline std::vector<GameObject*>& getObjects() { return gObjects; }
 
 	Vector3 getPosition() const;
 	void setPosition(Vector3 newPos);

@@ -9,13 +9,13 @@ TimeExplosionForceGenerator::TimeExplosionForceGenerator(double forceMagnitude, 
 }
 
 void 
-TimeExplosionForceGenerator::applyForce(Particle* particle)  {
-	Vector3 distance = particle->getTransform()->p - position;
+TimeExplosionForceGenerator::applyForce(GameObject* gObject)  {
+	Vector3 distance = gObject->getTransform()->p - position;
 	double quadraticDistanceMagnitude = distance.magnitudeSquared();
 
 	if (quadraticDistanceMagnitude > std::pow(radius, 2)) return;
 
 	Vector3 force = distance * (forceMagnitude / quadraticDistanceMagnitude);
 	force *= pow(exp(1.0), -(time / activationTime));
-	particle->addForce(force);
+	gObject->addForce(force);
 }

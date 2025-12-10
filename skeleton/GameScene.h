@@ -8,6 +8,7 @@
 class Cube;
 class ParticleSystem;
 class ParticleGenerator;
+class SolidGenerator;
 class Particle;
 class ForceGenerator;
 class GameScene : public Scene 
@@ -24,7 +25,7 @@ class GameScene : public Scene
 
 	ForceGenerator* shootForce;
 	ParticleSystem* ball;
-	ParticleGenerator* ballGen;
+	SolidGenerator* ballGen;
 	ParticleGenerator* proyectileBallGen;
 
 	ParticleSystem* wind;
@@ -41,15 +42,16 @@ class GameScene : public Scene
 
 	std::queue<std::pair<ParticleSystem*, ForceGenerator*>> forceToRemove;
 	std::queue<std::pair<ParticleSystem*, ParticleGenerator*>> pGenToRemove;
+	std::queue<std::pair<ParticleSystem*, SolidGenerator*>> sGenToRemove;
 
 	void toggleConfetti(bool activate);
 	void toggleWind(bool activate);
 	void toggleRain(bool activate);
-
+	void processRemovals();
 	const double SHOOT_FORCE = 800.0; //Fuerza en newtons de un golpe profesional de frontón
 	
 public:
-	GameScene();
+	GameScene(physx::PxScene* scene, physx::PxPhysics* physics);
 	~GameScene();
 
 	void integrate(double t) override;

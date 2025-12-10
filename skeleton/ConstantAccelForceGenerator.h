@@ -10,8 +10,8 @@ public:
 	ConstantAccelForceGenerator(double targetAccel, Vector3 direction);
 	~ConstantAccelForceGenerator() {}
 
-	void applyForce(Particle* particle) override; 
-	void applyForce(physx::PxRigidBody* solid) override;
+	void applyForce(GameObject* gObject) override; 
+	
 
 	double getTargetAccel() const;
 	void setTargetAccel(double targetAccel);

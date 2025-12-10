@@ -5,7 +5,7 @@
 #include "ExplosionForceGenerator.h"
 #include "ParticleSystem.h"
 
-Scene2::Scene2() : Scene()
+Scene2::Scene2(physx::PxScene* scene, physx::PxPhysics* physics) : Scene(scene, physics)
 {
 
 }

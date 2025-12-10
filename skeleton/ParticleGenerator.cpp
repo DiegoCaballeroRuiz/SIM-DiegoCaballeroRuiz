@@ -1,4 +1,5 @@
 #include "ParticleGenerator.h"
+#include "Particle.hpp"
 
 ParticleGenerator::ParticleGenerator(Vector3 position, Vector3 direction, double speed, double duration, double probGen, double mass)
 	: position(Vector3(0.0)), offset(position), duration(duration), probGen(probGen), speed(speed), direction(direction), mass(mass)
@@ -7,9 +8,9 @@ ParticleGenerator::ParticleGenerator(Vector3 position, Vector3 direction, double
 
 ParticleGenerator::~ParticleGenerator() {}
 
-std::vector<Particle*> 
+std::vector<GameObject*> 
 ParticleGenerator::generate(int nParticles) {
-	std::vector<Particle*> particles;
+	std::vector<GameObject*> particles;
 
 	for (int i = 0; i < nParticles; ++i) {
 		auto particle = genParticle();

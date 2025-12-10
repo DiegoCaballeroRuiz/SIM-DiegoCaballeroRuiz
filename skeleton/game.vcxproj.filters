@@ -31,6 +31,10 @@
     <ClCompile Include="SpringsScene.cpp" />
     <ClCompile Include="ElasticForceGenerator.cpp" />
     <ClCompile Include="FlotationForceGenerator.cpp" />
+    <ClCompile Include="SolidGenerator.cpp" />
+    <ClCompile Include="GaussianSolidGenerator.cpp" />
+    <ClCompile Include="Solid.cpp" />
+    <ClCompile Include="GameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -63,6 +67,10 @@
     <ClInclude Include="SpringsScene.h" />
     <ClInclude Include="ElasticForceGenerator.h" />
     <ClInclude Include="FlotationForceGenerator.h" />
+    <ClInclude Include="SolidGenerator.h" />
+    <ClInclude Include="GaussianSolidGenerator.h" />
+    <ClInclude Include="Solid.h" />
+    <ClInclude Include="GameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

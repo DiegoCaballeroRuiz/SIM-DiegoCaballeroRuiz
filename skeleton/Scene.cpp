@@ -1,7 +1,8 @@
 #include "Scene.h"
 
-Scene::Scene() {
-
+Scene::Scene(physx::PxScene* scene, physx::PxPhysics* physics) 
+	: gScene(scene), gPhysics(physics)
+{
 }
 
 Scene::~Scene() {

@@ -13,6 +13,5 @@ public:
 	FlotationForceGenerator(double liquidHeight, double volume, Vector3 pos = {.0, .0, .0}, double liquidDensity = WATER_DENSITY, double gravity = GRAVITY_ACCEL, double pHeight = PARTICLE_HEIGHT);
 	~FlotationForceGenerator();
 
-	void applyForce(physx::PxRigidBody* solid) override;
-	void applyForce(Particle* particle) override;
+	void applyForce(GameObject* gObject) override;
 };

@@ -1,5 +1,5 @@
 #include "ForceGenerator.h"
-#include "Particle.hpp"
+#include "GameObject.h"
 
 ForceGenerator::ForceGenerator(Vector3 force, Vector3 pos) : force(force), position(pos), time(.0)
 {
@@ -8,15 +8,9 @@ ForceGenerator::ForceGenerator(Vector3 force, Vector3 pos) : force(force), posit
 ForceGenerator::~ForceGenerator() {}
 
 void 
-ForceGenerator::applyForce(Particle* particle) {
-	particle->addForce(force);
+ForceGenerator::applyForce(GameObject* gObject) {
+	gObject->addForce(force);
 }
-
-void 
-ForceGenerator::applyForce(physx::PxRigidBody* solid) {
-	solid->addForce(force);
-}
-
 
 void 
 ForceGenerator::setForce(Vector3 newForce) {

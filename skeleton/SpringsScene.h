@@ -17,7 +17,7 @@ class SpringsScene : public Scene
 
 	void toggleSpring(bool activate);
 public:
-	SpringsScene();
+	SpringsScene(physx::PxScene* scene, physx::PxPhysics* physics);
 	~SpringsScene();
 
 	void integrate(double t) override;

@@ -1,6 +1,6 @@
 #include "ConstantAccelForceGenerator.h"
 
-#include "Particle.hpp"
+#include "GameObject.h"
 
 ConstantAccelForceGenerator::ConstantAccelForceGenerator(double targetAccel, Vector3 direction) 
 	: ForceGenerator(), targetAccel(targetAccel), direction(direction)
@@ -8,12 +8,12 @@ ConstantAccelForceGenerator::ConstantAccelForceGenerator(double targetAccel, Vec
 }
 
 void 
-ConstantAccelForceGenerator::applyForce(Particle* particle) {
-	Vector3 forceToApply = particle->getMass() * targetAccel * direction;
-	particle->addForce(forceToApply);
+ConstantAccelForceGenerator::applyForce(GameObject* gObject) {
+	Vector3 forceToApply = gObject->getMass() * targetAccel * direction;
+	gObject->addForce(forceToApply);
 }
 
-double 
+double
 ConstantAccelForceGenerator::getTargetAccel() const {
 	return targetAccel;
 }
