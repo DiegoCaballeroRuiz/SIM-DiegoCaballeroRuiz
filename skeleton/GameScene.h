@@ -17,7 +17,8 @@ class Player;
 class GameScene : public Scene 
 {
 	StaticSolid* floor;
-	StaticSolid* wall;
+	StaticSolid* hitWall;
+	StaticSolid* leftWall;
 	StaticSolid* wallLine;
 
 	ParticleSystem* confetti;

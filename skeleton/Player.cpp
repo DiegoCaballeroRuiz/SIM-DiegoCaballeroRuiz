@@ -9,14 +9,14 @@
 Player::Player(Vector3 pos, physx::PxPhysics* gPhysics, physx::PxScene* mScene, double speed, double serveForce, double width, double height, double mass, Vector4 color)
 	: ParticleSystem(pos, 1), Solid(pos, mass, gPhysics, mScene, CreateShape(physx::PxBoxGeometry(width, height, width)), color, INFINITY), speed(speed), hasServed(false)
 {
-	body->setLinearDamping(0.9);
+	body->setLinearDamping(0.1);
 	body->setRigidDynamicLockFlags(physx::PxRigidDynamicLockFlags(
 		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X |
 		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y |
 		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z
 	));
 
-	ballGenerator = new GaussianSolidGenerator(Vector3(width * 2, .0, .0), 10.0, 0.02, .0, INFINITY, mScene, gPhysics, CreateShape(physx::PxSphereGeometry(0.06)), Vector4{ 1.0, 1.0, 0.0, 1.0 });
+	ballGenerator = new GaussianSolidGenerator(Vector3(width * 2, .0, .0), 10.0, 0.02, .0, INFINITY, mScene, gPhysics, CreateShape(physx::PxSphereGeometry(0.1)), Vector4{ 1.0, 1.0, 0.0, 1.0 });
 	servingForceGen = new ForceGenerator(Vector3{.0, (float)serveForce, .0});
 	hitForceGen = new StrikeForceGenerator(100.0, Vector3(.0, .25, -1.0), 2 * height);
 }
@@ -31,19 +31,19 @@ Player::processKey(unsigned char c) {
 
 	switch (c) {
 	case 'w':
-		body->addForce(Vector3(.0, .0, speed));
-		break;
-
-	case 'a':
 		body->addForce(Vector3(.0, .0, -speed));
 		break;
 
+	case 'a':
+		body->addForce(Vector3(-speed, .0, .0));
+		break;
+
 	case 's':
-		body->addForce(Vector3(speed, .0, .0));
+		body->addForce(Vector3(.0, .0, speed));
 		break;
 
 	case 'd':
-		body->addForce(Vector3(-speed, .0, .0));
+		body->addForce(Vector3(speed, .0, .0));
 		break;
 
 	case 'j':

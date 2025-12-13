@@ -10,7 +10,7 @@ Solid::Solid(Vector3 pos, double mass, physx::PxPhysics* gPhysics, physx::PxScen
 	renderItem = new RenderItem(shape, body, color);
 	body->setMass(mass);
 
-	body->setLinearDamping(.9);
+	body->setLinearDamping(.999);
 	physx::PxRigidBodyExt::setMassAndUpdateInertia(*body, mass);
 
 	mScene->addActor(*body);

@@ -51,9 +51,18 @@ GameScene::integrate(double t) {
 void 
 GameScene::start() {
 	// Game Objects
-	floor = new StaticSolid(Vector3(-15), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(100.0, 20, 100.0)), { 0.8, 0.8, 0.25, 1.0 });
-	wall = new StaticSolid(Vector3(.0, .0, -15), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(100.0, 200.0, 1.0)), { 0.0, 0.5, 0.2, 1.0 });
-	wallLine = new StaticSolid(Vector3(.0, 6, -15), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(100.0, 0.3, 1.5)), { .0, .0, .0, 1.0 });
+	hitWall = new StaticSolid(Vector3(.0, 6.5, -15.), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(10.0, 13, 1.0)), { 0.0, 0.5, 0.2, 1.0 });
+	leftWall = new StaticSolid(Vector3(-10, 6.5, .0), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(1.0, 13, 30)), { 0.0, 0.5, 0.2, 1.0 });
+	wallLine = new StaticSolid(Vector3(.0, 6.5, -14.95), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(10.0, 0.3, 1.)), { .0, .0, .0, 1.0 });
+	floor = new StaticSolid(Vector3(.0, -15, -15.0), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(100.0, 20, 100.0)), { 0.51, 0.75, 0.875, 1.0 });
+
+	//Player
+	rafaNadal = new Player(Vector3(0, 8, 0), gPhysics, gScene);
+	inputListeners.push_back(rafaNadal);
+
+	//Camera
+	GetCamera()->setPosition(Vector3(5, 10, 10));
+	GetCamera()->setDirection(Vector3(-2.5, .0, -5.0));
 
 	//Set gravitational force
 	gravity = new GravityForceGenerator(10.0);
@@ -93,12 +102,6 @@ GameScene::start() {
 	rain = new ParticleSystem(Vector3(.0, 100, .0));
 	rainGen = new GaussianGenerator(Vector3(.0), Vector3(.0), .0, 30.0, 1.0, .01, 200.0, .0, .0, .0, Vector4(.0, 0.25, 1.0, 1.0));
 	rain->registerForceGenerator(gravity);
-
-	//Player
-	rafaNadal = new Player(Vector3(0, 0, 0), gPhysics, gScene);
-	GetCamera()->setPosition(Vector3(5, 10, 10));
-	GetCamera()->setDirection(Vector3(-2.5, .0, -5.0));
-	inputListeners.push_back(rafaNadal);
 }
 
 void 
