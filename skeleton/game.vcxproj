@@ -269,6 +269,7 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PointProyectileGenerator.cpp" />
     <ClCompile Include="Proyectile.cpp" />
     <ClCompile Include="RenderUtils.cpp" />
@@ -281,6 +282,7 @@
     <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="SpringsScene.cpp" />
     <ClCompile Include="StaticSolid.cpp" />
+    <ClCompile Include="StrikeForceGenerator.cpp" />
     <ClCompile Include="TimeExplosionForceGenerator.cpp" />
     <ClCompile Include="UniformGenerator.cpp" />
     <ClCompile Include="Vector3D.cpp" />
@@ -299,9 +301,11 @@
     <ClInclude Include="GaussianGenerator.h" />
     <ClInclude Include="GaussianSolidGenerator.h" />
     <ClInclude Include="GravityForceGenerator.h" />
+    <ClInclude Include="InputListener.h" />
     <ClInclude Include="Particle.hpp" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="PointProyectileGenerator.h" />
     <ClInclude Include="Proyectile.h" />
     <ClInclude Include="RenderUtils.hpp" />
@@ -314,6 +318,7 @@
     <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="SpringsScene.h" />
     <ClInclude Include="StaticSolid.h" />
+    <ClInclude Include="StrikeForceGenerator.h" />
     <ClInclude Include="TimeExplosionForceGenerator.h" />
     <ClInclude Include="UniformGenerator.h" />
     <ClInclude Include="Vector3D.hpp" />

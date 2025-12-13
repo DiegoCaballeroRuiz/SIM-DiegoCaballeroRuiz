@@ -12,6 +12,8 @@ class SolidGenerator;
 class StaticSolid;
 class Particle;
 class ForceGenerator;
+class Player;
+
 class GameScene : public Scene 
 {
 	StaticSolid* floor;
@@ -50,6 +52,10 @@ class GameScene : public Scene
 	void toggleRain(bool activate);
 	void processRemovals();
 	const double SHOOT_FORCE = 800.0; //Fuerza en newtons de un golpe profesional de frontón
+
+	std::vector<InputListener*> inputListeners;
+
+	Player* rafaNadal;
 	
 public:
 	GameScene(physx::PxScene* scene, physx::PxPhysics* physics);
@@ -58,6 +64,6 @@ public:
 	void integrate(double t) override;
 
 	void start() override;
-	void processKey(unsigned char c, const physx::PxTransform* camera) override;
+	void processKey(unsigned char c) override;
 };
 

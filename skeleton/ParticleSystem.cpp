@@ -15,7 +15,7 @@ ParticleSystem::ParticleSystem(Vector3 pos)
 }
 
 ParticleSystem::ParticleSystem(Vector3 pos, int maxParticles) 
-	: maxParticles(maxParticles), uncappedParticles(false), pos(pos)
+	: maxParticles(maxParticles), uncappedParticles(false), uncappedRange(true), pos(pos)
 { 
 }
 
@@ -26,7 +26,7 @@ ParticleSystem::ParticleSystem(Vector3 pos, int maxParticles, double range)
 
 
 ParticleSystem::ParticleSystem(Vector3 pos, double range)
-	: pos(pos), range(range), uncappedRange(false) 
+	: pos(pos), range(range), uncappedRange(false), uncappedParticles(true)
 {
 }
 

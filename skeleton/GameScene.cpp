@@ -9,6 +9,7 @@
 #include "StaticSolid.h"
 #include "Particle.hpp"
 #include "GaussianSolidGenerator.h"
+#include "Player.h"
 
 GameScene::GameScene(physx::PxScene* scene, physx::PxPhysics* physics) 
 	: Scene(scene, physics), nextConfettiActivation(true), nextWind(true)
@@ -16,7 +17,7 @@ GameScene::GameScene(physx::PxScene* scene, physx::PxPhysics* physics)
 }
 
 GameScene::~GameScene() {
-	toggleWind(false);
+	/*toggleWind(false);
 	toggleRain(false);
 	toggleConfetti(false);
 
@@ -33,7 +34,7 @@ GameScene::~GameScene() {
 
 	delete wind;
 
-	delete rain;
+	delete rain;*/
 }
 
 void 
@@ -42,6 +43,7 @@ GameScene::integrate(double t) {
 	ball->update(t);
 	wind->update(t);
 	rain->update(t);
+	rafaNadal->update(t);
 
 	processRemovals();
 }
@@ -49,12 +51,9 @@ GameScene::integrate(double t) {
 void 
 GameScene::start() {
 	// Game Objects
-	/*floor = new Cube(Vector3(0), { 0.8, 0.8, 0.25, 1.0 }, 1000.0, .2, 1000.0);
-	wall = new Cube(Vector3(0.0, 100.0, -100), { 0.0, 0.8, 0.2, 1.0 }, 1000.0, 200.0, 1.0);
-	wallLine = new Cube(Vector3(0.0, 10, -100), { .0, .0, .0, 1.0 }, 1000.0, 5, 1.5);*/
-	floor = new StaticSolid(Vector3(.0), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(1000.0, .2, 1000.0)), { 0.8, 0.8, 0.25, 1.0 });
-	wall = new StaticSolid(Vector3(.0), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(1000.0, 200.0, 1.0)), { 0.0, 0.8, 0.2, 1.0 });
-	wallLine = new StaticSolid(Vector3(.0), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(1000.0, 5, 1.5)), { .0, .0, .0, 1.0 });
+	floor = new StaticSolid(Vector3(-15), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(100.0, 20, 100.0)), { 0.8, 0.8, 0.25, 1.0 });
+	wall = new StaticSolid(Vector3(.0, .0, -15), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(100.0, 200.0, 1.0)), { 0.0, 0.5, 0.2, 1.0 });
+	wallLine = new StaticSolid(Vector3(.0, 6, -15), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(100.0, 0.3, 1.5)), { .0, .0, .0, 1.0 });
 
 	//Set gravitational force
 	gravity = new GravityForceGenerator(10.0);
@@ -94,26 +93,21 @@ GameScene::start() {
 	rain = new ParticleSystem(Vector3(.0, 100, .0));
 	rainGen = new GaussianGenerator(Vector3(.0), Vector3(.0), .0, 30.0, 1.0, .01, 200.0, .0, .0, .0, Vector4(.0, 0.25, 1.0, 1.0));
 	rain->registerForceGenerator(gravity);
+
+	//Player
+	rafaNadal = new Player(Vector3(0, 0, 0), gPhysics, gScene);
+	GetCamera()->setPosition(Vector3(5, 10, 10));
+	GetCamera()->setDirection(Vector3(-2.5, .0, -5.0));
+	inputListeners.push_back(rafaNadal);
 }
 
 void 
-GameScene::processKey(unsigned char c, const physx::PxTransform* camera) {
+GameScene::processKey(unsigned char c) {
 	switch (c) {
 	case 'c':
 		toggleConfetti(nextConfettiActivation);
 		nextConfettiActivation = !nextConfettiActivation;
 		break;
-	case 'f': {
-		auto force = SHOOT_FORCE * GetCamera()->getDir().getNormalized();
-		shootForce->setForce(force);
-		ball->setPosition(GetCamera()->getTransform().p);
-		ball->registerForceGenerator(shootForce);
-		ball->registerSolidGenerator(ballGen, 1);
-
-		sGenToRemove.push({ ball, ballGen });
-		forceToRemove.push({ ball, shootForce });
-		break;
-	}
 	case 'v':
 		toggleWind(nextWind);
 		nextWind = !nextWind;
@@ -121,6 +115,10 @@ GameScene::processKey(unsigned char c, const physx::PxTransform* camera) {
 	case 'l':
 		toggleRain(nextRain);
 		nextRain= !nextRain;
+		break;
+	default: 
+		for (InputListener* listener : inputListeners)
+			listener->processKey(c);
 		break;
 	}
 }

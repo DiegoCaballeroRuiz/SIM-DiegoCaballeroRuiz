@@ -12,6 +12,7 @@ class GameObject;
 
 class ParticleSystem
 {
+protected:
 	struct pGenInfo {
 		ParticleGenerator* generator;
 		int nParticles;
@@ -21,8 +22,6 @@ class ParticleSystem
 		SolidGenerator* generator;
 		int nSolids;
 	};
-
-protected:
 	std::vector<GameObject*> gObjects;
 	std::vector<pGenInfo> particleGenerators;
 	std::vector<sGenInfo> solidGenerators;
@@ -57,7 +56,7 @@ public:
 	/// NO LO BORRA !!!!!!!!!!!!!!!!
 	void deRegisterForceGenerator(ForceGenerator* gen);
 
-	void update(double delta);
+	virtual void update(double delta);
 
 	inline std::vector<GameObject*>& getObjects() { return gObjects; }
 

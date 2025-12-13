@@ -36,6 +36,8 @@
     <ClCompile Include="Solid.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="StaticSolid.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="StrikeForceGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -73,6 +75,9 @@
     <ClInclude Include="Solid.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="StaticSolid.h" />
+    <ClInclude Include="InputListener.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="StrikeForceGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

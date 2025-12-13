@@ -15,7 +15,6 @@ public:
 	virtual void applyForce(GameObject* gObject) override;
 
 	void attachParticle(GameObject* affected, GameObject* anchor);
-	void attachBody(physx::PxRigidBody* affected, physx::PxRigidBody* anchor);
 
 	void setK(double k);
 	double getK() const;

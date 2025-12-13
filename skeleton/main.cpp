@@ -109,7 +109,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	}
 	default:
-		currentScene->processKey(key, &camera);
+		currentScene->processKey(key);
 		break;
 	}
 }

@@ -37,5 +37,5 @@ Scene2::start() {
 }
 
 void 
-Scene2::processKey(unsigned char c, const physx::PxTransform* camera) {
+Scene2::processKey(unsigned char c) {
 }

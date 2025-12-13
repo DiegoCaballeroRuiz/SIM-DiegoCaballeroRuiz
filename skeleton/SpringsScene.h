@@ -23,6 +23,6 @@ public:
 	void integrate(double t) override;
 
 	void start() override;
-	void processKey(unsigned char c, const physx::PxTransform* camera) override;
+	void processKey(unsigned char c) override;
 };
 

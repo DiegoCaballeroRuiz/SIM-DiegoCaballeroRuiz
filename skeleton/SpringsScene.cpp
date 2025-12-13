@@ -44,7 +44,7 @@ SpringsScene::start() {
 }
 
 void 
-SpringsScene::processKey(unsigned char c, const physx::PxTransform* camera) {
+SpringsScene::processKey(unsigned char c) {
 	switch (c) {
 	case 'k':
 		springGen->setK(springGen->getK() + 10);

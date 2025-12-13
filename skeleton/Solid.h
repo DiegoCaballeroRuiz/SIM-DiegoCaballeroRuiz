@@ -14,7 +14,6 @@ public:
 	Solid(Vector3 pos, double mass, physx::PxPhysics* gPhysics, physx::PxScene* mScene, physx::PxShape* shape, Vector4 color = { 1.0, 1.0, 1.0, 1.0 }, double lifeTime = 100.0);
 	~Solid();
 
-
 	inline physx::PxRigidDynamic* getBody() { return body; }
 
 	void addForce(Vector3 force) override;
