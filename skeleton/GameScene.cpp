@@ -1,6 +1,5 @@
 #include "GameScene.h"
 
-#include "Cube.h"
 #include "GaussianGenerator.h"
 #include "ExplosionForceGenerator.h"
 #include "GravityForceGenerator.h"
@@ -11,9 +10,20 @@
 #include "GaussianSolidGenerator.h"
 #include "Player.h"
 
-GameScene::GameScene(physx::PxScene* scene, physx::PxPhysics* physics) 
-	: Scene(scene, physics), nextConfettiActivation(true), nextWind(true)
+#include <iostream>
+
+GameScene::GameScene(physx::PxScene* scene, physx::PxPhysics* physics)
+	: Scene(scene, physics), nextConfettiActivation(true), timeUntilNextWheatherEvent(.0), inWheatherEvent(false), currentFloorBounces(0)
 {
+	std::random_device device;
+	rng = std::mt19937(device());
+	wheatherEventDelayGenerator = std::uniform_real_distribution<double>(MIN_NEXT_WHEATHER_DELAY, MAX_NEXT_WHEATHER_DELAY);
+	chance = std::uniform_real_distribution<double>(.0, 1.);
+
+	timeUntilNextWheatherEvent = wheatherEventDelayGenerator(rng);
+
+	wallData.identity = whoami::WALL;
+	floorData.identity = whoami::FLOOR;
 }
 
 GameScene::~GameScene() {
@@ -39,42 +49,49 @@ GameScene::~GameScene() {
 
 void 
 GameScene::integrate(double t) {
-	confetti->update(t);
-	ball->update(t);
-	wind->update(t);
-	rain->update(t);
+	manageWheather(t);
+
 	rafaNadal->update(t);
 
-	processRemovals();
+	confetti->update(t);
+	wind->update(t);
+	rain->update(t);
 }
 
 void 
 GameScene::start() {
 	// Game Objects
 	hitWall = new StaticSolid(Vector3(.0, 6.5, -15.), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(10.0, 13, 1.0)), { 0.0, 0.5, 0.2, 1.0 });
+	backWall = new StaticSolid(Vector3(.0, 6.5, 30.), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(10.0, 13, 1.0)), Vector4(.0), 100.0, false);
 	leftWall = new StaticSolid(Vector3(-10, 6.5, .0), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(1.0, 13, 30)), { 0.0, 0.5, 0.2, 1.0 });
+	rightWall = new StaticSolid(Vector3(10, 6.5, .0), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(1.0, 13, 30)), Vector4(.0), 100.0, false);
 	wallLine = new StaticSolid(Vector3(.0, 6.5, -14.95), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(10.0, 0.3, 1.)), { .0, .0, .0, 1.0 });
-	floor = new StaticSolid(Vector3(.0, -15, -15.0), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(100.0, 20, 100.0)), { 0.51, 0.75, 0.875, 1.0 });
+	hitWall->getBody()->userData = &wallData;
+	backWall->getBody()->userData = &wallData;
+	leftWall->getBody()->userData = &wallData;
+	rightWall->getBody()->userData = &wallData;
+	wallLine->getBody()->userData = &wallData;
+
+	floor = new StaticSolid(Vector3(.0, -15, 0), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(10.0, 20, 30.0), gPhysics->createMaterial(1, 0.8, 0)), { 0.51, 0.75, 0.875, 1.0 });
+	floor->getBody()->userData = &floorData;
 
 	//Player
-	rafaNadal = new Player(Vector3(0, 8, 0), gPhysics, gScene);
-	inputListeners.push_back(rafaNadal);
+	rafaNadal = new Player(Vector3(0, 2, 0), gPhysics, gScene);
 
 	//Camera
-	GetCamera()->setPosition(Vector3(5, 10, 10));
-	GetCamera()->setDirection(Vector3(-2.5, .0, -5.0));
+	GetCamera()->setDirection(Vector3(.0, -1, -5.0));
 
 	//Set gravitational force
-	gravity = new GravityForceGenerator(10.0);
+	gravity = new GravityForceGenerator(4);
 
 	//Confetti
-	confetti = new ParticleSystem(Vector3(0, 100.0, 0));
+	confetti = new ParticleSystem(Vector3(0, 25, 0));
 	
-	GaussianGenerator* confetti1 = new GaussianGenerator(Vector3(.0), Vector3(.0), 5.0, 10.0, 0.2, 1.5, 1.0, .0, .0, 1.0, { 1.0, 0.0, 0.0, 1.0 });
-	GaussianGenerator* confetti2 = new GaussianGenerator(Vector3(.0), Vector3(.0), 5.0, 10.0, 0.2, 1.5, 1.0, .0, .0, 1.0, { .0, 1.0, 0.0, 1.0 });
-	GaussianGenerator* confetti3 = new GaussianGenerator(Vector3(.0), Vector3(.0), 5.0, 10.0, 0.2, 1.5, 1.0, .0, .0, 1.0, { .0, .0, 1.0, 1.0 });
-	GaussianGenerator* confetti4 = new GaussianGenerator(Vector3(.0), Vector3(.0), 5.0, 10.0, 0.2, 1.5, 1.0, .0, .0, 1.0, { 1.0, 1.0, 1.0, 1.0 });
-	GaussianGenerator* confetti5 = new GaussianGenerator(Vector3(.0), Vector3(.0), 5.0, 10.0, 0.2, 1.5, 1.0, .0, .0, 1.0, { 1.0, 1.0, .0, 1.0 });
+	GaussianGenerator* confetti1 = new GaussianGenerator(Vector3(.0), Vector3(.0), 2.0, 4.0, 0.2, 2.0, 1., .0, .0, 1.0, { 1.0, 0.0, 0.0, 1.0 });
+	GaussianGenerator* confetti2 = new GaussianGenerator(Vector3(.0), Vector3(.0), 2.0, 4.0, 0.2, 2.0, 1., .0, .0, 1.0, { .0, 1.0, 0.0, 1.0 });
+	GaussianGenerator* confetti3 = new GaussianGenerator(Vector3(.0), Vector3(.0), 2.0, 4.0, 0.2, 2.0, 1., .0, .0, 1.0, { .0, .0, 1.0, 1.0 });
+	GaussianGenerator* confetti4 = new GaussianGenerator(Vector3(.0), Vector3(.0), 2.0, 4.0, 0.2, 2.0, 1., .0, .0, 1.0, { 1.0, 1.0, 1.0, 1.0 });
+	GaussianGenerator* confetti5 = new GaussianGenerator(Vector3(.0), Vector3(.0), 2.0, 4.0, 0.2, 2.0, 1., .0, .0, 1.0, { 1.0, 1.0, .0, 1.0 });
 
 	confettiGens = { confetti1, confetti2, confetti3, confetti4, confetti5 };
 	confettiForce = new ExplosionForceGenerator(Vector3(100.0, 0.0, 0.0), confetti->getPosition(), 5.0);
@@ -82,15 +99,6 @@ GameScene::start() {
 	confetti->registerForceGenerator(gravity);
 
 	confettiCenter = new Particle(confetti->getPosition(), Vector3(0.0), 0.9, 1, Vector4(1.0, 0.0, 1.0, 1.0));
-
-	// Tennis ball
-	ball = new ParticleSystem(Vector3(0.0), 1);
-	ballGen = new GaussianSolidGenerator(Vector3(.0), 10.0, .02, .0, 5.0, gScene, gPhysics, CreateShape(physx::PxSphereGeometry(1.)), Vector4{ 1.0, 1.0, .2, 1.0 });
-	proyectileBallGen = new PointProyectileGenerator(Vector3(.0), Vector3(1.0, .0, .0), 40, 25, 5.0, .05, { .0, .0, .0, 1.0 });
-
-	shootForce = new ForceGenerator();
-	forces.push_back(shootForce);
-	ball->registerForceGenerator(gravity);
 
 	//Windy weather
 	wind = new ParticleSystem(Vector3(.0));
@@ -111,17 +119,7 @@ GameScene::processKey(unsigned char c) {
 		toggleConfetti(nextConfettiActivation);
 		nextConfettiActivation = !nextConfettiActivation;
 		break;
-	case 'v':
-		toggleWind(nextWind);
-		nextWind = !nextWind;
-		break;
-	case 'l':
-		toggleRain(nextRain);
-		nextRain= !nextRain;
-		break;
 	default: 
-		for (InputListener* listener : inputListeners)
-			listener->processKey(c);
 		break;
 	}
 }
@@ -147,7 +145,6 @@ GameScene::toggleWind(bool activate) {
 	if (activate) {
 		wind->registerParticleGenerator(windGen, 20);
 		rain->registerForceGenerator(windForce);
-		ball->registerForceGenerator(windForce);
 		confetti->registerForceGenerator(windForce);
 	}
 
@@ -155,7 +152,6 @@ GameScene::toggleWind(bool activate) {
 		wind->deRegisterParticleGenerator(windGen);
 		rain->deRegisterForceGenerator(windForce);
 		confetti->deRegisterForceGenerator(windForce);
-		ball->deRegisterForceGenerator(windForce);
 	}
 }
 
@@ -163,33 +159,46 @@ void
 GameScene::toggleRain(bool activate) {
 	if (activate) {
 		rain->registerParticleGenerator(rainGen, 10);
-	}
-
-	else {
+	} else {
 		rain->deRegisterParticleGenerator(rainGen);
 	}
 }
 
 void 
-GameScene::processRemovals() {
-	while (!forceToRemove.empty()) {
-		auto pair = forceToRemove.front();
-		forceToRemove.pop();
+GameScene::manageWheather(double dt) {
+	timeUntilNextWheatherEvent -= dt;
+	if (timeUntilNextWheatherEvent > 0) return;
 
-		pair.first->deRegisterForceGenerator(pair.second);
+	timeUntilNextWheatherEvent = wheatherEventDelayGenerator(rng);
+
+	if (inWheatherEvent) {
+		toggleRain(false);
+		toggleWind(false);
+	}
+	else {
+		if (chance(rng) < RAIN_CHANCE) toggleRain(true);
+		else toggleWind(true);
 	}
 
-	while (!pGenToRemove.empty()) {
-		auto pair = pGenToRemove.front();
-		pGenToRemove.pop();
+	inWheatherEvent = !inWheatherEvent;
+}
 
-		pair.first->deRegisterParticleGenerator(pair.second);
-	}
+void 
+GameScene::onCollision(physx::PxActor* actor1, physx::PxActor* actor2) {
+	const UserData* data1 = reinterpret_cast<UserData*>(actor1->userData);
+	const UserData* data2 = reinterpret_cast<UserData*>(actor2->userData);
 
-	while (!sGenToRemove.empty()) {
-		auto pair = sGenToRemove.front();
-		sGenToRemove.pop();
+	if (!data1 || !data2) return;
 
-		pair.first->deRegisterSolidGenerator(pair.second);
+	if (data1->identity == whoami::BALL || data2->identity == whoami::BALL) {
+		auto nonBallActorData = data1->identity == whoami::BALL ? data2 : data1;
+		
+		if (nonBallActorData->identity == whoami::FLOOR) {
+			currentFloorBounces++;
+			if (currentFloorBounces >= LOSING_FLOOR_BOUNCES) std::cout << "You lose!\n";
+		}
+		else if (nonBallActorData->identity == whoami::WALL) {
+			currentFloorBounces = 0;
+		}
 	}
 }

@@ -4,6 +4,11 @@
 #include <vector>
 
 #include <queue>
+#include <random>
+
+#include "UserData.h"
+
+
 
 class Cube;
 class ParticleSystem;
@@ -16,48 +21,61 @@ class Player;
 
 class GameScene : public Scene 
 {
+	//Scenery
 	StaticSolid* floor;
 	StaticSolid* hitWall;
+	StaticSolid* rightWall;
+	StaticSolid* backWall;
 	StaticSolid* leftWall;
 	StaticSolid* wallLine;
 
+	//Confetti
 	ParticleSystem* confetti;
 	Particle* confettiCenter;
 	std::vector<ParticleGenerator*> confettiGens;
 	ForceGenerator* confettiForce;
-	ForceGenerator* gravity;
+	bool nextConfettiActivation;
 
-	ForceGenerator* shootForce;
-	ParticleSystem* ball;
-	SolidGenerator* ballGen;
-	ParticleGenerator* proyectileBallGen;
-
+	//Global wind
 	ParticleSystem* wind;
 	ForceGenerator* windForce;
 	ParticleGenerator* windGen;
-	bool nextWind;
 
+	//Rain
 	ParticleSystem* rain;
 	ParticleGenerator* rainGen;
-	bool nextRain;
 
+	//Force management
+	ForceGenerator* gravity;
 	std::vector<ForceGenerator*> forces;
-	bool nextConfettiActivation;
 
-	std::queue<std::pair<ParticleSystem*, ForceGenerator*>> forceToRemove;
-	std::queue<std::pair<ParticleSystem*, ParticleGenerator*>> pGenToRemove;
-	std::queue<std::pair<ParticleSystem*, SolidGenerator*>> sGenToRemove;
-
+	//Toggles
 	void toggleConfetti(bool activate);
 	void toggleWind(bool activate);
 	void toggleRain(bool activate);
-	void processRemovals();
-	const double SHOOT_FORCE = 800.0; //Fuerza en newtons de un golpe profesional de frontón
 
-	std::vector<InputListener*> inputListeners;
-
+	//Player
 	Player* rafaNadal;
-	
+
+	//Randomness
+	std::mt19937 rng;
+	std::uniform_real_distribution<double> wheatherEventDelayGenerator;
+	std::uniform_real_distribution<double> chance;
+
+	const double MIN_NEXT_WHEATHER_DELAY = 20.;
+	const double MAX_NEXT_WHEATHER_DELAY = 50.;
+	const double RAIN_CHANCE = .5;
+
+	double timeUntilNextWheatherEvent;
+	bool inWheatherEvent;
+
+	//Losing ceck
+	const int LOSING_FLOOR_BOUNCES = 4;
+	int currentFloorBounces;
+	UserData wallData;
+	UserData floorData;
+
+	void manageWheather(double dt);
 public:
 	GameScene(physx::PxScene* scene, physx::PxPhysics* physics);
 	~GameScene();
@@ -66,5 +84,6 @@ public:
 
 	void start() override;
 	void processKey(unsigned char c) override;
+	void onCollision(physx::PxActor* actor1, physx::PxActor* actor2) override;
 };
 

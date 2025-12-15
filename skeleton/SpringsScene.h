@@ -24,5 +24,6 @@ public:
 
 	void start() override;
 	void processKey(unsigned char c) override;
+	void onCollision(physx::PxActor* actor1, physx::PxActor* actor2) override {}
 };
 

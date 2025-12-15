@@ -13,7 +13,7 @@
 
 #include <iostream>
 
-std::string display_text = "This is a test";
+std::string display_text = "";
 
 
 using namespace physx;
@@ -118,6 +118,8 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 {
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);
+
+	currentScene->onCollision(actor1, actor2);
 }
 
 

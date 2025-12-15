@@ -1,13 +1,13 @@
 #include "Player.h"
 
 #include <climits>
-#include <iostream>
 #include "GaussianSolidGenerator.h"
 #include "ForceGenerator.h"
+#include "KeyboardState.h"
 #include "StrikeForceGenerator.h"
 
 Player::Player(Vector3 pos, physx::PxPhysics* gPhysics, physx::PxScene* mScene, double speed, double serveForce, double width, double height, double mass, Vector4 color)
-	: ParticleSystem(pos, 1), Solid(pos, mass, gPhysics, mScene, CreateShape(physx::PxBoxGeometry(width, height, width)), color, INFINITY), speed(speed), hasServed(false)
+	: ParticleSystem(pos, 1), Solid(pos, mass, gPhysics, mScene, CreateShape(physx::PxBoxGeometry(width, height, width)), color, INFINITY), speed(speed), hasServed(false), remainigHitCooldown(0), ball(nullptr)
 {
 	body->setLinearDamping(0.1);
 	body->setRigidDynamicLockFlags(physx::PxRigidDynamicLockFlags(
@@ -18,7 +18,9 @@ Player::Player(Vector3 pos, physx::PxPhysics* gPhysics, physx::PxScene* mScene, 
 
 	ballGenerator = new GaussianSolidGenerator(Vector3(width * 2, .0, .0), 10.0, 0.02, .0, INFINITY, mScene, gPhysics, CreateShape(physx::PxSphereGeometry(0.1)), Vector4{ 1.0, 1.0, 0.0, 1.0 });
 	servingForceGen = new ForceGenerator(Vector3{.0, (float)serveForce, .0});
-	hitForceGen = new StrikeForceGenerator(100.0, Vector3(.0, .25, -1.0), 2 * height);
+	hitForceGen = new StrikeForceGenerator(-75.0, Vector3(.0, .0, 1.0), 2.5 * height);
+
+	ballData.identity = whoami::BALL;
 }
 
 Player::~Player() {
@@ -27,39 +29,57 @@ Player::~Player() {
 }
 
 void 
-Player::processKey(unsigned char c) {
+Player::processInput() {
 
-	switch (c) {
-	case 'w':
-		body->addForce(Vector3(.0, .0, -speed));
-		break;
+	Vector3 forceToAdd = Vector3(.0);
+	auto input = KeyboardState::Instance();
+	bool somethingPressed = false;
 
-	case 'a':
-		body->addForce(Vector3(-speed, .0, .0));
-		break;
+	//Movement input
+	if (input->isKeyDown('w')) {
+		forceToAdd = Vector3(.0, .0, -1.0);
+		somethingPressed = true;
+	}
+	 
+	else if (input->isKeyDown('s')) {
+		forceToAdd = Vector3(.0, .0, 1.0);
+		somethingPressed = true;
+	}
 
-	case 's':
-		body->addForce(Vector3(.0, .0, speed));
-		break;
+	if (input->isKeyDown('a')) {
+		forceToAdd = Vector3(-1.0, .0, .0);
+		somethingPressed = true;
+	}
 
-	case 'd':
-		body->addForce(Vector3(speed, .0, .0));
-		break;
+	else if (input->isKeyDown('d')) {
+		forceToAdd = Vector3(1.0, .0, .0);
+		somethingPressed = true;
+	}
 
-	case 'j':
+	forceToAdd = forceToAdd.getNormalized() * speed;
+	if (somethingPressed) body->addForce(forceToAdd);
+
+	// Hitting input
+	if (input->isKeyDown('j') && remainigHitCooldown < 0) {
 		if (hasServed) hit();
 		else serve();
-	break;
-	default: break;
+
+		remainigHitCooldown = HIT_COOLDOWN;
 	}
 }
 
 void 
 Player::update(double delta) {
-	hitForceGen->setPosition(pos);
-	ParticleSystem::update(delta);
-	
+	processInput();
+	remainigHitCooldown -= delta;
+
 	pos = body->getGlobalPose().p;
+	hitForceGen->setPosition(pos);
+	GetCamera()->setPosition(pos + Vector3(0, 5, 8));
+	
+	ParticleSystem::update(delta);
+	tryRegisterBall();
+	
 	processRemovals();
 }
 
@@ -92,4 +112,12 @@ Player::processRemovals() {
 		deRegisterForceGenerator(forcesToRemove.front());
 		forcesToRemove.pop();
 	}
+}
+
+void 
+Player::tryRegisterBall() {
+	if (ball != nullptr || gObjects.size() == 0) return;
+
+	ball = static_cast<Solid*>(gObjects[0]);
+	ball->getBody()->userData = &ballData;
 }

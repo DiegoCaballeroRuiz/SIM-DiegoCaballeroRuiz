@@ -6,9 +6,9 @@ class StaticSolid : public GameObject
 {
 protected:
 	physx::PxRigidStatic* body;
-
+	bool visible;
 public:
-	StaticSolid(Vector3 pos, physx::PxPhysics* gPhysics, physx::PxScene* mScene, physx::PxShape* shape, Vector4 color = { 1.0, 1.0, 1.0, 1.0 }, double lifeTime = 100.0);
+	StaticSolid(Vector3 pos, physx::PxPhysics* gPhysics, physx::PxScene* mScene, physx::PxShape* shape, Vector4 color = { 1.0, 1.0, 1.0, 1.0 }, double lifeTime = 100.0, bool visible = true);
 	~StaticSolid();
 
 

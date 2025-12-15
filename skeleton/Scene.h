@@ -6,6 +6,7 @@ namespace physx {
 	class PxTransform;
 	class PxScene;
 	class PxPhysics;
+	class PxActor;
 }
 
 class Scene : public InputListener
@@ -16,6 +17,7 @@ public:
 
 	virtual void start() = 0;
 	virtual ~Scene() = 0;
+	virtual void onCollision(physx::PxActor* actor1, physx::PxActor* actor2) = 0;
 
 protected:
 	physx::PxScene* gScene;

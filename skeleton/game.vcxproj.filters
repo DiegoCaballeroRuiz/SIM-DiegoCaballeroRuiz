@@ -38,6 +38,7 @@
     <ClCompile Include="StaticSolid.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="StrikeForceGenerator.cpp" />
+    <ClCompile Include="KeyboardState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -78,6 +79,8 @@
     <ClInclude Include="InputListener.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="StrikeForceGenerator.h" />
+    <ClInclude Include="KeyboardState.h" />
+    <ClInclude Include="UserData.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

@@ -3,9 +3,11 @@
 #include "Solid.h"
 #include "ParticleSystem.h"
 #include "InputListener.h"
+#include "UserData.h"
+
 #include <queue>
 
-class Player : public Solid, public ParticleSystem, public InputListener
+class Player : public Solid, public ParticleSystem
 {
 protected:
 	double speed;
@@ -18,15 +20,21 @@ protected:
 	std::queue<SolidGenerator*> solidGenToRemove;
 
 	bool hasServed;
+	double remainigHitCooldown;
+	const int HIT_COOLDOWN = 1;
+
+	Solid* ball;
+	UserData ballData;
 
 	void serve();
 	void hit();
 	void processRemovals();
+	void tryRegisterBall();
 public:
-	Player(Vector3 pos, physx::PxPhysics* gPhysics, physx::PxScene* mScene, double speed = 5000.0, double serveForce = 25.0, double width = 0.25 , double height = .9, double mass = 85.0, Vector4 color = {.6, .2, .0, 1.0});
+	Player(Vector3 pos, physx::PxPhysics* gPhysics, physx::PxScene* mScene, double speed = 2500.0, double serveForce = 25.0, double width = 0.25 , double height = .9, double mass = 85.0, Vector4 color = {.6, .2, .0, 1.0});
 	~Player();
 
-	void processKey(unsigned char c) override;
+	void processInput();
 	void update(double delta) override;
 };
 
