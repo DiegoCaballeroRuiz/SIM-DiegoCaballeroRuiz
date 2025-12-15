@@ -13,7 +13,7 @@
 #include <iostream>
 
 GameScene::GameScene(physx::PxScene* scene, physx::PxPhysics* physics)
-	: Scene(scene, physics), nextConfettiActivation(true), timeUntilNextWheatherEvent(.0), inWheatherEvent(false), currentFloorBounces(0)
+	: Scene(scene, physics), nextConfettiActivation(true), timeUntilNextWheatherEvent(.0), inWheatherEvent(false), currentFloorBounces(0), currentCheckCooldown(0)
 {
 	std::random_device device;
 	rng = std::mt19937(device());
@@ -50,6 +50,7 @@ GameScene::~GameScene() {
 void 
 GameScene::integrate(double t) {
 	manageWheather(t);
+	currentCheckCooldown -= t;
 
 	rafaNadal->update(t);
 
@@ -185,6 +186,8 @@ GameScene::manageWheather(double dt) {
 
 void 
 GameScene::onCollision(physx::PxActor* actor1, physx::PxActor* actor2) {
+	if (currentCheckCooldown > 0) return;
+
 	const UserData* data1 = reinterpret_cast<UserData*>(actor1->userData);
 	const UserData* data2 = reinterpret_cast<UserData*>(actor2->userData);
 
@@ -194,11 +197,15 @@ GameScene::onCollision(physx::PxActor* actor1, physx::PxActor* actor2) {
 		auto nonBallActorData = data1->identity == whoami::BALL ? data2 : data1;
 		
 		if (nonBallActorData->identity == whoami::FLOOR) {
+			std::cout << "Floor was hit!\n";
 			currentFloorBounces++;
+			currentCheckCooldown = COLISION_CHECK_COOLDOWN;
 			if (currentFloorBounces >= LOSING_FLOOR_BOUNCES) std::cout << "You lose!\n";
 		}
 		else if (nonBallActorData->identity == whoami::WALL) {
+			std::cout << "Wall was hit!\n";
 			currentFloorBounces = 0;
+			currentCheckCooldown = COLISION_CHECK_COOLDOWN;
 		}
 	}
 }

@@ -71,7 +71,11 @@ class GameScene : public Scene
 
 	//Losing ceck
 	const int LOSING_FLOOR_BOUNCES = 4;
+	const double COLISION_CHECK_COOLDOWN = .5;
+
 	int currentFloorBounces;
+	double currentCheckCooldown;
+
 	UserData wallData;
 	UserData floorData;
 
