@@ -100,8 +100,6 @@ void cleanupPhysics(bool interactive)
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)
 {
-	PX_UNUSED(camera);
-
 	switch(toupper(key))
 	{
 	case ' ':

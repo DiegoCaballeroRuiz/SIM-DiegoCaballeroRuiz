@@ -22,6 +22,7 @@ Solid::~Solid()
 
 	auto scene = body->getScene();
 	scene->removeActor(*body);
+	body = nullptr;
 }
 
 void 

@@ -8,8 +8,6 @@
 
 #include "UserData.h"
 
-
-
 class Cube;
 class ParticleSystem;
 class ParticleGenerator;
@@ -17,8 +15,10 @@ class SolidGenerator;
 class StaticSolid;
 class Particle;
 class ForceGenerator;
+class SpringForceGenerator;
 class Player;
 class ConstantAccelForceGenerator;
+class GameObject;
 
 class GameScene : public Scene 
 {
@@ -41,20 +41,12 @@ class GameScene : public Scene
 	ParticleSystem* globalWind;
 	ForceGenerator* windForce;
 	ParticleGenerator* windGen;
-	const double windForceMagnitude = 1;
+	const double WIND_FORCE_MAGNITUDE = 1;
 
 	//Rain
 	ParticleSystem* rain;
 	ParticleGenerator* rainGen;
-
-	//Force management
 	ForceGenerator* gravity;
-	std::vector<ForceGenerator*> forces;
-
-	//Toggles
-	void toggleConfetti(bool activate);
-	void toggleWind(bool activate);
-	void toggleRain(bool activate);
 
 	//Player
 	Player* rafaNadal;
@@ -71,7 +63,7 @@ class GameScene : public Scene
 	double timeUntilNextWheatherEvent;
 	bool inWheatherEvent;
 
-	//Losing ceck
+	//Losing check
 	const int LOSING_FLOOR_BOUNCES = 4;
 	const double COLISION_CHECK_COOLDOWN = .5;
 
@@ -81,7 +73,24 @@ class GameScene : public Scene
 	UserData wallData;
 	UserData floorData;
 
+	//Spectators
+	std::vector<StaticSolid*> bleachers;
+	ParticleSystem* people;
+	SpringForceGenerator* backboneForce;
+	ForceGenerator* excitementForce;
+	const int PEOPLE_PER_BLEACHER = 4;
+
+	//Methods
 	void manageWheather(double dt);
+	void createBleachers();
+	void toggleConfetti(bool activate);
+	void toggleWind(bool activate);
+	void toggleRain(bool activate);
+
+	//To not leave memory
+	std::vector<GameObject*> wontDeleteItself;
+	std::vector<ForceGenerator*> forces;
+	std::vector<ParticleSystem*> systems;
 public:
 	GameScene(physx::PxScene* scene, physx::PxPhysics* physics);
 	~GameScene();

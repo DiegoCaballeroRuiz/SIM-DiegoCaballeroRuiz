@@ -12,7 +12,9 @@ StaticSolid::StaticSolid(Vector3 pos, physx::PxPhysics* gPhysics, physx::PxScene
 }
 
 StaticSolid::~StaticSolid() {
-	if (!visible) return;
-	DeregisterRenderItem(renderItem);
-	delete renderItem;
+	if (visible) {
+		DeregisterRenderItem(renderItem);
+		delete renderItem;
+	}
+	renderItem = nullptr;
 }

@@ -29,6 +29,9 @@ Player::Player(Vector3 pos, physx::PxPhysics* gPhysics, physx::PxScene* mScene, 
 Player::~Player() {
 	ParticleSystem::~ParticleSystem();
 	Solid::~Solid();
+
+	delete friction;
+	delete servingForceGen;
 }
 
 void 
