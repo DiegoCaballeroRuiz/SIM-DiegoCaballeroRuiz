@@ -1,23 +1,18 @@
 #include "ExplosionForceGenerator.h"
-
-#include "Particle.hpp"
-#include "Solid.h"
+#include "GameObject.h"
 #include <cmath>
 
-ExplosionForceGenerator::ExplosionForceGenerator(Vector3 force, Vector3 pos, double radius) 
-	: ForceGenerator(force, pos), radius(radius)
+ExplosionForceGenerator::ExplosionForceGenerator(Vector3 force, Vector3 position, double radius)
+	: ForceGenerator(force, position), radius(radius), forceMagnitude(force.magnitude())
 {
+
 }
 
 void 
 ExplosionForceGenerator::applyForce(GameObject* gObject) {
 	Vector3 distance = gObject->getTransform()->p - position;
-	double quadraticDistanceMagnitude = distance.magnitudeSquared();
 
-	if (quadraticDistanceMagnitude > std::pow(radius, 2)) return;
+	if (distance.magnitude() > radius) return;
 
-	double forceMagnitude = force.magnitude();
-	float quadraticInverseDistance = 1 / quadraticDistanceMagnitude;
-
-	gObject->addForce((distance * forceMagnitude) * quadraticInverseDistance);
+	gObject->addForce(forceMagnitude * distance / distance.magnitudeSquared() * std::exp(-time/duration));
 }

@@ -20,10 +20,8 @@
     <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="ExplosionForceGenerator.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="GravityForceGenerator.cpp" />
-    <ClCompile Include="TimeExplosionForceGenerator.cpp" />
     <ClCompile Include="ConstantAccelForceGenerator.cpp" />
     <ClCompile Include="PointProyectileGenerator.cpp" />
     <ClCompile Include="Proyectile.cpp" />
@@ -41,6 +39,7 @@
     <ClCompile Include="KeyboardState.cpp" />
     <ClCompile Include="WindForceGenerator.cpp" />
     <ClCompile Include="FrictionForceGenerator.cpp" />
+    <ClCompile Include="ExplosionForceGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -65,7 +64,6 @@
     <ClInclude Include="ExplosionForceGenerator.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="GravityForceGenerator.h" />
-    <ClInclude Include="TimeExplosionForceGenerator.h" />
     <ClInclude Include="ConstantAccelForceGenerator.h" />
     <ClInclude Include="Proyectile.h" />
     <ClInclude Include="PointProyectileGenerator.h" />

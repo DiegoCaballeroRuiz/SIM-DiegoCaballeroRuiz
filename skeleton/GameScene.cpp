@@ -129,7 +129,7 @@ GameScene::start() {
 	rain = new ParticleSystem(Vector3(.0, 100, .0));
 	systems.push_back(rain);
 
-	rainGen = new GaussianGenerator(Vector3(.0), Vector3(.0), .0, 30.0, 1.0, .01, 30.0, .0, .0, .0, Vector4(.0, 0.25, 1.0, 1.0));
+	rainGen = new GaussianGenerator(Vector3(.0), Vector3(.0), .0, 30.0, 1.0, .01, 10.0, .0, .0, .0, Vector4(.0, 0.25, 1.0, 1.0));
 	rain->registerForceGenerator(gravity);
 }
 
@@ -158,6 +158,7 @@ GameScene::toggleConfetti(bool activate) {
 			confetti->deRegisterParticleGenerator(gen);
 
 		confetti->deRegisterForceGenerator(confettiForce);
+		confettiForce->resetTime();
 	}
 }
 
@@ -181,7 +182,7 @@ GameScene::toggleWind(bool activate) {
 void 
 GameScene::toggleRain(bool activate) {
 	if (activate) {
-		rain->registerParticleGenerator(rainGen, 10);
+		rain->registerParticleGenerator(rainGen, 3);
 		rafaNadal->setRaining(true);
 	} else {
 		rain->deRegisterParticleGenerator(rainGen);

@@ -22,5 +22,6 @@ public:
 
 	inline Vector3 getPosition() { return position; }
 	inline void setPosition(const Vector3& newPos) { position = newPos; }
+	inline void resetTime() { time = 0; }
 };
 
