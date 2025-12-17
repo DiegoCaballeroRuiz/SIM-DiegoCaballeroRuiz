@@ -5,9 +5,11 @@
 #include "ForceGenerator.h"
 #include "KeyboardState.h"
 #include "StrikeForceGenerator.h"
+#include "FrictionForceGenerator.h"
 
 Player::Player(Vector3 pos, physx::PxPhysics* gPhysics, physx::PxScene* mScene, double speed, double serveForce, double width, double height, double mass, Vector4 color)
-	: ParticleSystem(pos, 1), Solid(pos, mass, gPhysics, mScene, CreateShape(physx::PxBoxGeometry(width, height, width)), color, INFINITY), speed(speed), hasServed(false), remainigHitCooldown(0), ball(nullptr)
+	: ParticleSystem(pos, 1), Solid(pos, mass, gPhysics, mScene, CreateShape(physx::PxBoxGeometry(width, height, width))
+		, color, INFINITY), speed(speed), hasServed(false), raining(false), remainigHitCooldown(0), ball(nullptr)
 {
 	body->setLinearDamping(0.1);
 	body->setRigidDynamicLockFlags(physx::PxRigidDynamicLockFlags(
@@ -19,8 +21,9 @@ Player::Player(Vector3 pos, physx::PxPhysics* gPhysics, physx::PxScene* mScene, 
 	ballGenerator = new GaussianSolidGenerator(Vector3(width * 2, .0, .0), 10.0, 0.02, .0, INFINITY, mScene, gPhysics, CreateShape(physx::PxSphereGeometry(0.1)), Vector4{ 1.0, 1.0, 0.0, 1.0 });
 	servingForceGen = new ForceGenerator(Vector3{.0, (float)serveForce, .0});
 	hitForceGen = new StrikeForceGenerator(-75.0, Vector3(.0, .0, 1.0), 2.5 * height);
-
 	ballData.identity = whoami::BALL;
+
+	friction = new FrictionForceGenerator(10);
 }
 
 Player::~Player() {
@@ -58,6 +61,9 @@ Player::processInput() {
 
 	forceToAdd = forceToAdd.getNormalized() * speed;
 	if (somethingPressed) body->addForce(forceToAdd);
+	if (!raining) {
+		friction->applyForce(this);
+	}
 
 	// Hitting input
 	if (input->isKeyDown('j') && remainigHitCooldown < 0) {

@@ -18,6 +18,7 @@ class StaticSolid;
 class Particle;
 class ForceGenerator;
 class Player;
+class ConstantAccelForceGenerator;
 
 class GameScene : public Scene 
 {
@@ -37,9 +38,10 @@ class GameScene : public Scene
 	bool nextConfettiActivation;
 
 	//Global wind
-	ParticleSystem* wind;
+	ParticleSystem* globalWind;
 	ForceGenerator* windForce;
 	ParticleGenerator* windGen;
+	const double windForceMagnitude = 1;
 
 	//Rain
 	ParticleSystem* rain;

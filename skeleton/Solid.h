@@ -20,6 +20,7 @@ public:
 	void integrate(double dt) override;
 
 	inline double getMass() const override { return body->getMass(); }
+	inline Vector3 getVelocity() const override { return body->getLinearVelocity(); }
 	inline void setMass(double newMass) { physx::PxRigidBodyExt::setMassAndUpdateInertia(*body, newMass); }
 	inline physx::PxTransform* getTransform() override { return &body->getGlobalPose(); }
 };

@@ -8,6 +8,7 @@
 #include "StaticSolid.h"
 #include "Particle.hpp"
 #include "GaussianSolidGenerator.h"
+#include "WindForceGenerator.h"
 #include "Player.h"
 
 #include <iostream>
@@ -55,7 +56,7 @@ GameScene::integrate(double t) {
 	rafaNadal->update(t);
 
 	confetti->update(t);
-	wind->update(t);
+	globalWind->update(t);
 	rain->update(t);
 }
 
@@ -73,7 +74,7 @@ GameScene::start() {
 	rightWall->getBody()->userData = &wallData;
 	wallLine->getBody()->userData = &wallData;
 
-	floor = new StaticSolid(Vector3(.0, -15, 0), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(10.0, 20, 30.0), gPhysics->createMaterial(1, 0.8, 0)), { 0.51, 0.75, 0.875, 1.0 });
+	floor = new StaticSolid(Vector3(.0, -15, 0), gPhysics, gScene, CreateShape(physx::PxBoxGeometry(10.0, 20, 30.0), gPhysics->createMaterial(.0, 1., 0.1)), { 0.51, 0.75, 0.875, 1.0 });
 	floor->getBody()->userData = &floorData;
 
 	//Player
@@ -102,14 +103,14 @@ GameScene::start() {
 	confettiCenter = new Particle(confetti->getPosition(), Vector3(0.0), 0.9, 1, Vector4(1.0, 0.0, 1.0, 1.0));
 
 	//Windy weather
-	wind = new ParticleSystem(Vector3(.0));
-	windForce = new ConstantAccelForceGenerator(100, Vector3(-1.0, .0, .0));
-	windGen = new GaussianGenerator(Vector3(.0), Vector3(.0), 5.0, 3.0, .2, .1, 500.0, .0, 1.5, .5, Vector4(1.0, 1.0, 1.0, 1.0));
-	wind->registerForceGenerator(windForce);
+	globalWind = new ParticleSystem(Vector3(.0, 10, .0));
+	windForce = new WindForceGenerator(Vector3(.0, 1., .0), 1, .1);
+	windGen = new GaussianGenerator(Vector3(.0), Vector3(.0), 5.0, 3.0, .2, .1, 100.0, .0, 1.5, .5, Vector4(1.0, 1.0, 1.0, 1.0));
+	globalWind->registerForceGenerator(windForce);
 
 	//Rainy weather
 	rain = new ParticleSystem(Vector3(.0, 100, .0));
-	rainGen = new GaussianGenerator(Vector3(.0), Vector3(.0), .0, 30.0, 1.0, .01, 200.0, .0, .0, .0, Vector4(.0, 0.25, 1.0, 1.0));
+	rainGen = new GaussianGenerator(Vector3(.0), Vector3(.0), .0, 30.0, 1.0, .01, 30.0, .0, .0, .0, Vector4(.0, 0.25, 1.0, 1.0));
 	rain->registerForceGenerator(gravity);
 }
 
@@ -144,14 +145,16 @@ GameScene::toggleConfetti(bool activate) {
 void 
 GameScene::toggleWind(bool activate) {
 	if (activate) {
-		wind->registerParticleGenerator(windGen, 20);
+		globalWind->registerParticleGenerator(windGen, 20);
 		rain->registerForceGenerator(windForce);
 		confetti->registerForceGenerator(windForce);
+		rafaNadal->registerForceGenerator(windForce);
 	}
 
 	else {
-		wind->deRegisterParticleGenerator(windGen);
+		globalWind->deRegisterParticleGenerator(windGen);
 		rain->deRegisterForceGenerator(windForce);
+		rafaNadal->deRegisterForceGenerator(windForce);
 		confetti->deRegisterForceGenerator(windForce);
 	}
 }
@@ -160,8 +163,10 @@ void
 GameScene::toggleRain(bool activate) {
 	if (activate) {
 		rain->registerParticleGenerator(rainGen, 10);
+		rafaNadal->setRaining(true);
 	} else {
 		rain->deRegisterParticleGenerator(rainGen);
+		rafaNadal->setRaining(false);
 	}
 }
 

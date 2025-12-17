@@ -26,5 +26,6 @@ public:
 	virtual double getMass() const = 0;
 	virtual void setMass(double newMass) = 0;
 	virtual physx::PxTransform* getTransform() = 0;
+	virtual Vector3 getVelocity() const = 0;
 };
 

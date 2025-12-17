@@ -19,6 +19,7 @@ public:
 
 	inline double getMass() const override { return mass; }
 	inline physx::PxTransform* getTransform() override { return &pose; }
+	inline Vector3 getVelocity() const override { return velocity; }
 	virtual void setMass(double newMass) override;
 
 	void setStatic();

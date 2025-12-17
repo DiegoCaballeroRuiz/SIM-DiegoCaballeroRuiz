@@ -20,6 +20,7 @@ public:
 
 	inline double getMass() const override { return 0; }
 	inline void setMass(double newMass) {}
+	inline Vector3 getVelocity() const override { return Vector3(.0); }
 	inline physx::PxTransform* getTransform() override { return &body->getGlobalPose(); }
 };
 
