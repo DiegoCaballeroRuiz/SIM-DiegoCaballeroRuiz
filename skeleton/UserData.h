@@ -9,5 +9,4 @@ enum whoami {
 
 struct UserData {
 	whoami identity;
-	void* object;
 };
